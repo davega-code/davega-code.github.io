@@ -1,0 +1,70 @@
+/* About section specific styles */
+.about-content {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.intro-section,
+.background-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.intro-text {
+  font-size: var(--font-size-lg);
+  line-height: 1.6;
+  color: var(--text-white);
+  margin-bottom: var(--spacing-lg);
+}
+
+.skills-section {
+  margin-top: var(--spacing-xl);
+}
+
+.skill-card {
+  --card-width: 280px;
+  --card-height: 180px;
+}
+
+.background-content {
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+.tech-stack-section {
+  margin-top: var(--spacing-xl);
+}
+
+.tech-stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .skill-card {
+    --card-width: 240px;
+    --card-height: 160px;
+  }
+
+  .intro-text {
+    font-size: var(--font-size-md);
+  }
+
+  .tech-stack-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .skill-card {
+    --card-width: calc(100vw - var(--spacing-xl));
+    --card-height: 140px;
+  }
+
+  .tech-stack-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

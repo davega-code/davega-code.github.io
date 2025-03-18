@@ -1,8 +1,9 @@
 import React from 'react';
-import HeroBanner from '../hero/HeroBanner';
-import BaseCard from '../shared/cards/BaseCard';
-import RowContainer from '../shared/layout/RowContainer';
-import './Sections.css';
+import HeroBanner from '../../shared/hero/HeroBanner';
+import BaseCard from '../../shared/cards/BaseCard';
+import RowContainer from '../../shared/row-container/RowContainer';
+import '../../../styles/sections.css';
+import './ContactSection.css';
 
 // Placeholder image (replace with actual images later)
 const placeholderImage = 'https://via.placeholder.com/300x200';
@@ -78,29 +79,6 @@ const ContactSection: React.FC = () => {
       />
       
       <div className="contact-content">
-        {/* Contact form section */}
-        <section className="contact-form-section">
-          <h2>Get in Touch</h2>
-          <form className="contact-form">
-            {/* Add contact form fields */}
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input type="text" id="name" name="name" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" name="email" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea id="message" name="message" rows={5} />
-            </div>
-            <button type="submit" className="submit-button">
-              Send Message
-            </button>
-          </form>
-        </section>
-
         {/* Social media links */}
         <RowContainer title="Connect With Me">
           {socialLinks.map(link => (
@@ -115,15 +93,6 @@ const ContactSection: React.FC = () => {
           ))}
         </RowContainer>
 
-        {/* Additional contact information */}
-        <section className="additional-info">
-          <h2>Other Ways to Reach Me</h2>
-          <div className="contact-info">
-            {/* Add additional contact information */}
-            <p>Based in [Your Location]</p>
-            <p>Available for remote collaboration</p>
-          </div>
-        </section>
       </div>
     </div>
   );

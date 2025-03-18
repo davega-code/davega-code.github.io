@@ -1,19 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/layout/Layout';
-import HomePage from './components/sections/HomePage';
-import AboutSection from './components/sections/AboutSection';
-import BlogSection from './components/sections/BlogSection';
-import PhotographySection from './components/sections/PhotographySection';
-import ContactSection from './components/sections/ContactSection';
+import { Layout } from './components/shared';
+import {
+  HomePage,
+  AboutSection,
+  BlogSection,
+  PhotographySection,
+  ContactSection
+} from './components/sections';
 import './App.css';
 
-/**
- * App Component
- * Root component that sets up routing and global layout.
- * Wraps all routes in the Layout component for consistent
- * header, navigation, and footer across all pages.
- */
 const App: React.FC = () => {
   return (
     <Router>

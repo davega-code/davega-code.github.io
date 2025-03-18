@@ -1,0 +1,51 @@
+/* Base section styles shared across all sections */
+.section-page {
+  background-color: var(--background-dark);
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+}
+
+/* Section content base styles */
+.section-content {
+  position: relative;
+  z-index: 10;
+  padding-top: 100px;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--content-padding);
+  padding-right: var(--content-padding);
+}
+
+/* Row container spacing */
+.row-container + .row-container {
+  margin-top: var(--spacing-xl);
+}
+
+/* Section title styles */
+.section-title {
+  color: var(--text-white);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Content grid layout */
+.content-grid {
+  display: grid;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section-content {
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-content {
+    padding-top: 60px;
+  }
+}

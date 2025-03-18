@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import HeroBanner from '../hero/HeroBanner';
-import BaseCard from '../shared/cards/BaseCard';
-import RowContainer from '../shared/layout/RowContainer';
+import HeroBanner from '../../shared/hero/HeroBanner';
+import BaseCard from '../../shared/cards/BaseCard';
+import RowContainer from '../../shared/row-container/RowContainer';
+import '../../../styles/sections.css';
 import './HomePage.css';
 
 // Placeholder image (replace with actual images later)

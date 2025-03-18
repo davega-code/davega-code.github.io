@@ -1,8 +1,9 @@
 import React from 'react';
-import HeroBanner from '../hero/HeroBanner';
-import BaseCard from '../shared/cards/BaseCard';
-import RowContainer from '../shared/layout/RowContainer';
-import './Sections.css';
+import HeroBanner from '../../shared/hero/HeroBanner';
+import BaseCard from '../../shared/cards/BaseCard';
+import RowContainer from '../../shared/row-container/RowContainer';
+import '../../../styles/sections.css';
+import './PhotographySection.css';
 
 // Placeholder image (replace with actual images later)
 const placeholderImage = 'https://via.placeholder.com/300x200';

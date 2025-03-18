@@ -58,7 +58,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="header-content">
           {/* Site logo/name */}
           <div className="logo">
-            <Link to="/">YOUR NAME</Link>
+            <Link to="/">David Vega Ramirez</Link>
           </div>
           {/* Main navigation */}
           <nav className="main-nav">
@@ -78,7 +78,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Footer with copyright */}
       <footer className="layout-footer">
-        <p>© {new Date().getFullYear()} Your Name. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} David Vega Ramirez.</p>
       </footer>
     </div>
   );
