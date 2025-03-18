@@ -1,44 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './HeroBanner.css';
 
+/**
+ * HeroBanner Props Interface
+ * @interface HeroBannerProps
+ * @property {string} title - Main heading text for the banner
+ * @property {string} subtitle - Secondary text below the main heading
+ */
 interface HeroBannerProps {
   title: string;
   subtitle: string;
 }
 
+/**
+ * HeroBanner Component
+ * A Netflix-style hero banner section featuring:
+ * - Large background image/slideshow
+ * - Gradient overlay for text legibility
+ * - Responsive title and subtitle
+ * - Positioned at the top of each main section
+ *
+ * Used as the main visual element at the top of major sections
+ * with a consistent dark gradient overlay to maintain text legibility
+ * and create visual hierarchy.
+ *
+ * @component
+ * @example
+ * ```jsx
+ * <HeroBanner
+ *   title="Welcome to My Portfolio"
+ *   subtitle="Explore my work and projects"
+ * />
+ * ```
+ */
 const HeroBanner: React.FC<HeroBannerProps> = ({ title, subtitle }) => {
-  // Mock images for slideshow - replace with your own
-  const images = [
-    'https://via.placeholder.com/1920x1080/333333',
-    'https://via.placeholder.com/1920x1080/444444',
-    'https://via.placeholder.com/1920x1080/555555',
-  ];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [images.length]);
-
   return (
     <div className="hero-banner">
+      {/* Optional: Background slideshow container */}
       <div className="slideshow-container">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className={`slide ${index === currentImageIndex ? 'active' : ''}`}
-            style={{ backgroundImage: `url(${image})` }}
-          />
-        ))}
+        {/* Add slideshow images here if needed */}
       </div>
+      
+      {/* Hero content with title and subtitle */}
       <div className="hero-content">
         <h1>{title}</h1>
         <p>{subtitle}</p>
       </div>
+
+      {/* 
+        Note: The gradient overlay is handled by CSS using a pseudo-element
+        to maintain separation of concerns and allow for easy modification
+        of the gradient values.
+      */}
     </div>
   );
 };
