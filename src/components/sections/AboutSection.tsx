@@ -1,11 +1,20 @@
 import React from 'react';
+import HeroBanner from '../hero/HeroBanner';
 import './Sections.css';
 
 const AboutSection: React.FC = () => {
   return (
-    <div className="section-container">
-      <h1>About Me</h1>
-      <p>This is where you'll learn more about who I am and what I do.</p>
+    <div className="section-page">
+      <HeroBanner 
+        title="About Me" 
+        subtitle="Get to know who I am and what I do" 
+      />
+      <div className="section-content">
+        <h2>My Story</h2>
+        <p>This is where your about content will go. Share your story, background, and what drives you.</p>
+        
+        {/* Add more content as needed */}
+      </div>
     </div>
   );
 };

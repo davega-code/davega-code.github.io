@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import HeroBanner from '../hero/HeroBanner';
 import SectionCard from '../cards/SectionCard';
 import { SectionCard as SectionCardType } from '../../types';
 import './HomePage.css';
@@ -47,21 +48,37 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
-      <div className="intro-section">
-        <h1>Welcome to My Personal Website</h1>
-        <p>
-          Here you can explore different aspects of my life and work. Click on any card below to dive deeper.
-        </p>
-      </div>
+      <HeroBanner 
+        title="Welcome to My Portfolio" 
+        subtitle="Explore my work, thoughts, and passions through an immersive experience" 
+      />
       
-      <div className="cards-container">
-        {sections.map(section => (
-          <SectionCard 
-            key={section.id} 
-            card={section} 
-            onClick={handleCardClick} 
-          />
-        ))}
+      <div className="content-section">
+        <h2 className="section-title">Trending</h2>
+        <div className="cards-slider">
+          <div className="cards-container" >
+            {sections.map(section => (
+              <SectionCard 
+                key={section.id} 
+                card={section} 
+                onClick={handleCardClick} 
+              />
+            ))}
+          </div>
+        </div>
+        
+        {/* Add more content sections as needed */}
+        <div className="featured-section">
+          <h2 className="section-title">Featured Work</h2>
+          <div className="featured-content">
+            <div className="featured-item">
+              <div className="featured-image" style={{ backgroundImage: `url(${placeholderImage})` }}></div>
+              <h3>Featured Project</h3>
+              <p>A brief description of your featured project or work goes here.</p>
+            </div>
+            {/* Add more featured items as needed */}
+          </div>
+        </div>
       </div>
     </div>
   );

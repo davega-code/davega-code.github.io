@@ -8,8 +8,23 @@ body {
   font-family: 'Roboto', Arial, sans-serif;
   background-color: #141414;
   color: white;
+  overflow-x: hidden;
 }
 
 .App {
   min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
