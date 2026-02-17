@@ -1,16 +1,22 @@
 import React from 'react';
+import { BackToTownsquare, SectionHeader } from '../../shared';
 import './BlogSection.css';
 
+export interface BlogSectionProps {
+  /** Callback fired when the back button is clicked */
+  onBack: () => void;
+}
+
 /**
- * BlogSection Component
- * Placeholder section page — internal layout redesign is out of scope
- * for the townsquare revamp. Content will be updated in a future phase.
+ * BlogSection — Blog page with BackToTownsquare navigation
+ * and shared SectionHeader decorative header.
  */
-const BlogSection: React.FC = () => {
+const BlogSection: React.FC<BlogSectionProps> = ({ onBack }) => {
   return (
-    <div className="section-page">
+    <div className="section-page section-page--blog">
+      <BackToTownsquare onClick={onBack} sectionName="Blog" />
       <div className="blog-content">
-        <h1>Blog</h1>
+        <SectionHeader title="Blog" />
         <p>Thoughts, tutorials, and insights — coming soon.</p>
       </div>
     </div>

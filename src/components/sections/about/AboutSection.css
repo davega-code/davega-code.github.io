@@ -1,70 +1,33 @@
 /* About section specific styles */
+.section-page--about {
+  min-height: 100vh;
+  background: var(--bg-color, #fafafa);
+  color: var(--line-color, #1a1a1a);
+  padding: var(--spacing-xl, 32px);
+  padding-top: 80px; /* Space for fixed back button */
+}
+
 .about-content {
   width: 100%;
-  max-width: var(--max-width);
+  max-width: 720px;
   margin: 0 auto;
 }
 
-.intro-section,
-.background-section {
-  margin-bottom: var(--spacing-xl);
-}
-
 .intro-text {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-lg, 1.25rem);
   line-height: 1.6;
-  color: var(--text-white);
-  margin-bottom: var(--spacing-lg);
-}
-
-.skills-section {
-  margin-top: var(--spacing-xl);
-}
-
-.skill-card {
-  --card-width: 280px;
-  --card-height: 180px;
-}
-
-.background-content {
-  color: var(--text-gray);
-  line-height: 1.6;
-}
-
-.tech-stack-section {
-  margin-top: var(--spacing-xl);
-}
-
-.tech-stack-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--spacing-md);
-  padding: var(--spacing-md) 0;
+  color: var(--line-color, #1a1a1a);
+  opacity: 0.8;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .skill-card {
-    --card-width: 240px;
-    --card-height: 160px;
+  .section-page--about {
+    padding: var(--spacing-md, 16px);
+    padding-top: 64px;
   }
 
   .intro-text {
-    font-size: var(--font-size-md);
-  }
-
-  .tech-stack-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-}
-
-@media (max-width: 480px) {
-  .skill-card {
-    --card-width: calc(100vw - var(--spacing-xl));
-    --card-height: 140px;
-  }
-
-  .tech-stack-grid {
-    grid-template-columns: repeat(2, 1fr);
+    font-size: var(--font-size-md, 1rem);
   }
 }

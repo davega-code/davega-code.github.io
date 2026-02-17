@@ -12,6 +12,8 @@ import { Bench } from './environment/Bench';
 import { LampPost } from './environment/LampPost';
 import { Path } from './environment/Path';
 import { toIsometric } from '../../utils/isometric';
+import { useIsometricViewport } from '../../hooks/useIsometricViewport';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 import './TownsquareScene.css';
 
 /** Map building IDs to their SVG illustration components, centering offsets, and label position */
@@ -48,6 +50,8 @@ const PATH_CONNECTIONS: Array<{
 export interface TownsquareSceneProps {
   /** Callback when a building is clicked */
   onBuildingClick: (buildingId: string) => void;
+  /** Whether a zoom navigation transition is currently active */
+  isNavigating?: boolean;
 }
 
 /**
@@ -55,10 +59,29 @@ export interface TownsquareSceneProps {
  *
  * Renders all buildings, connecting paths, and environmental elements
  * (trees, benches, lamp posts) in proper depth-sorted order.
+ *
+ * Integrates d3-zoom for viewport management (zoom, pan, pinch-to-zoom)
+ * via the {@link useIsometricViewport} hook.
  */
 export const TownsquareScene: React.FC<TownsquareSceneProps> = ({
   onBuildingClick,
+  isNavigating = false,
 }) => {
+  const { reducedMotion } = useReducedMotion();
+  const {
+    viewBox,
+    transformString,
+    svgRef,
+    setEnabled,
+    isTouchDevice,
+  } = useIsometricViewport(reducedMotion);
+
+  // Disable d3-zoom interactions during navigation transitions
+  // so ZoomTransition can control the scene without interference
+  React.useEffect(() => {
+    setEnabled(!isNavigating);
+  }, [isNavigating, setEnabled]);
+
   // Sort buildings by zIndex for proper depth rendering
   const sortedBuildings = [...BUILDINGS].sort((a, b) => a.zIndex - b.zIndex);
 
@@ -67,23 +90,41 @@ export const TownsquareScene: React.FC<TownsquareSceneProps> = ({
     (a, b) => a.zIndex - b.zIndex,
   );
 
-  // Compute viewBox to contain all elements with padding
-  // Grid ranges: X from -5 to 5, Y from -6 to 0
-  // With isometric projection and building sizes, we need generous bounds
-  const viewBoxMinX = -620;
-  const viewBoxMinY = -340;
-  const viewBoxWidth = 1240;
-  const viewBoxHeight = 680;
-
   return (
     <div className="townsquare-scene">
       <svg
+        ref={svgRef}
         className="townsquare-scene__svg"
-        viewBox={`${viewBoxMinX} ${viewBoxMinY} ${viewBoxWidth} ${viewBoxHeight}`}
+        viewBox={viewBox}
         role="navigation"
         aria-label="Website sections"
         xmlns="http://www.w3.org/2000/svg"
       >
+        {/* Hand-drawn imperfection filter — subtle turbulence displacement */}
+        <defs>
+          <filter id="hand-drawn" x="-2%" y="-2%" width="104%" height="104%">
+            <feTurbulence
+              type="turbulence"
+              baseFrequency="0.1"
+              numOctaves={2}
+              seed={42}
+              result="noise"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale={0.1}
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+        {/* Inner <g> controlled by d3-zoom — receives transform for pan/zoom */}
+        <g
+          className="townsquare-scene__zoom-group"
+          transform={transformString}
+          filter="url(#hand-drawn)"
+        >
         <IsometricGrid>
           {/* ── Paths (rendered first, behind everything) ── */}
           {PATH_CONNECTIONS.map((conn, i) => (
@@ -120,7 +161,11 @@ export const TownsquareScene: React.FC<TownsquareSceneProps> = ({
                 key={config.id}
                 transform={`translate(${screenX + offsetX}, ${screenY + offsetY})`}
               >
-                <BuildingWrapper config={config} onClick={onBuildingClick}>
+                <BuildingWrapper
+                  config={config}
+                  onClick={onBuildingClick}
+                  isTouchDevice={isTouchDevice}
+                >
                   <Component />
                 </BuildingWrapper>
                 {/* Building name label at bottom-front corner */}
@@ -141,6 +186,7 @@ export const TownsquareScene: React.FC<TownsquareSceneProps> = ({
             );
           })}
         </IsometricGrid>
+        </g>
       </svg>
     </div>
   );

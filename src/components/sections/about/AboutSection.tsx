@@ -1,22 +1,26 @@
 import React from 'react';
+import { BackToTownsquare, SectionHeader } from '../../shared';
 import './AboutSection.css';
 
+export interface AboutSectionProps {
+  /** Callback fired when the back button is clicked */
+  onBack: () => void;
+}
+
 /**
- * AboutSection Component
- * Placeholder section page — internal layout redesign is out of scope
- * for the townsquare revamp. Content will be updated in a future phase.
+ * AboutSection — About page with BackToTownsquare navigation
+ * and shared SectionHeader decorative header.
  */
-const AboutSection: React.FC = () => {
+const AboutSection: React.FC<AboutSectionProps> = ({ onBack }) => {
   return (
-    <div className="section-page">
+    <div className="section-page section-page--about">
+      <BackToTownsquare onClick={onBack} sectionName="About" />
       <div className="about-content">
-        <section className="intro-section">
-          <h1>About Me</h1>
-          <p className="intro-text">
-            A passionate software engineer with expertise in web development
-            and a love for creating elegant solutions to complex problems.
-          </p>
-        </section>
+        <SectionHeader title="About Me" />
+        <p className="intro-text">
+          A passionate software engineer with expertise in web development
+          and a love for creating elegant solutions to complex problems.
+        </p>
       </div>
     </div>
   );

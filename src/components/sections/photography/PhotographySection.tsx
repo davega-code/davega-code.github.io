@@ -1,16 +1,22 @@
 import React from 'react';
+import { BackToTownsquare, SectionHeader } from '../../shared';
 import './PhotographySection.css';
 
+export interface PhotographySectionProps {
+  /** Callback fired when the back button is clicked */
+  onBack: () => void;
+}
+
 /**
- * PhotographySection Component
- * Placeholder section page — internal layout redesign is out of scope
- * for the townsquare revamp. Content will be updated in a future phase.
+ * PhotographySection — Photography page with BackToTownsquare navigation
+ * and shared SectionHeader decorative header.
  */
-const PhotographySection: React.FC = () => {
+const PhotographySection: React.FC<PhotographySectionProps> = ({ onBack }) => {
   return (
-    <div className="section-page">
+    <div className="section-page section-page--photography">
+      <BackToTownsquare onClick={onBack} sectionName="Photography" />
       <div className="photography-content">
-        <h1>Photography</h1>
+        <SectionHeader title="Photography" />
         <p>Capturing moments through my lens — coming soon.</p>
       </div>
     </div>

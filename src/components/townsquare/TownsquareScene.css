@@ -10,6 +10,8 @@
   justify-content: center;
   background: var(--bg-color);
   overflow: hidden;
+  /* Prevent iOS Safari bounce-scroll while panning the scene */
+  touch-action: none;
 }
 
 .townsquare-scene__svg {
@@ -17,6 +19,15 @@
   height: 100%;
   max-width: 100vw;
   max-height: 100vh;
+  /* Prevent text selection while dragging to pan */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Zoom group (d3-zoom controlled) ── */
+.townsquare-scene__zoom-group {
+  /* GPU-accelerated transforms for smooth zoom/pan */
+  will-change: transform;
 }
 
 /* ── Building hover styles ── */
@@ -47,4 +58,46 @@
 .building-wrapper:focus-visible {
   outline: 3px solid var(--line-color);
   outline-offset: 4px;
+}
+
+/* ── Enlarged tap targets on touch devices (T046) ── */
+.building-wrapper__tap-target {
+  /* Invisible but captures touch events */
+  pointer-events: all;
+}
+
+/* ==========================================================================
+   Responsive — Tablet (≤768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .townsquare-scene__svg {
+    /* Ensure SVG fills the viewport on tablet */
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile (≤480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+  .townsquare-scene__svg {
+    /* Ensure SVG fills the viewport on mobile */
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* Increase building label size on mobile for readability */
+  .building-wrapper text {
+    font-size: 14px;
+  }
+}
+
+/* ==========================================================================
+   Reduced motion — disable zoom group transitions
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .townsquare-scene__zoom-group {
+    will-change: auto;
+  }
 }

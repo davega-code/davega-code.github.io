@@ -1,5 +1,60 @@
 /* ==========================================================================
    Design Tokens — Townsquare City Layout
+   ==========================================================================
+
+   VISUAL STYLE REFERENCE — Line Art Aesthetic
+   ============================================
+
+   This file serves as the living style guide for the townsquare line art
+   visual style. All components should follow these rules for consistency.
+
+   1. STROKE
+      - Weight:    var(--stroke-width) = 2px for all outlines
+      - Color:     var(--line-color) = #1a1a1a (near-black)
+      - Line cap:  strokeLinecap="round"   (soft, hand-drawn endpoints)
+      - Line join: strokeLinejoin="round"  (rounded corners, not sharp)
+
+   2. FILL RULES
+      - Buildings: accent color fills (low opacity / pastel tones)
+        • Town Center:  var(--accent-town-center)  #D4A574
+        • Newspaper:    var(--accent-newspaper)     #C4956A
+        • Art Gallery:  var(--accent-art-gallery)   #6BA3A0
+        • Post Office:  var(--accent-post-office)   #B07070
+      - Environment: retains original colors (not monochrome)
+        • Trees:    #8B6F47 trunk, #6B8E5A / #7DA06A foliage
+        • Benches:  #A0845C, #8B7350, #96794E wood tones
+        • Lamps:    #555 base, #F5E6B8 lamp glow
+        • Paths:    dashed stroke (strokeDasharray="8 4"), opacity 0.25
+
+   3. BUILDING GEOMETRY
+      - Flat isometric roofs (diamond top face) — no peaked polygons
+      - No building signs or text labels
+      - Isometric parallelogram windows (left-face vs right-face mirrored)
+      - Each building: shadow → left wall → right wall → roof → details
+
+   4. HAND-DRAWN IMPERFECTION
+      - SVG filter applied to the entire IsometricGrid:
+        feTurbulence (baseFrequency=0.03, numOctaves=2, seed=42)
+        + feDisplacementMap (scale=1.2)
+      - Creates subtle wobble without distorting readability
+      - rough.js used for UI elements (BackToTownsquare arrow icon)
+
+   5. SECTION PAGE HEADERS
+      - Shared SectionHeader component with CSS decoration
+      - Line-diamond-line pattern (purely CSS, no SVG)
+      - Centered above section title
+
+   6. TYPOGRAPHY
+      - Headings: Georgia, serif (font-weight: 700)
+      - Body: system font stack (-apple-system, BlinkMacSystemFont, ...)
+      - Button labels: Georgia, serif (font-weight: 600)
+
+   7. INTERACTIVE STATES
+      - Hover: invert colors (bg ↔ line-color)
+      - Focus-visible: 3px solid outline, 2px offset
+      - Active: scale(0.97) press effect
+      - Transitions: var(--transition-fast) = 0.2s ease
+
    ========================================================================== */
 
 :root {

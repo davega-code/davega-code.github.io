@@ -11,7 +11,10 @@ export interface PathProps {
 
 /**
  * SVG `<path>` element drawing a street/walkway between two IsometricPosition points.
- * Uses a slightly thicker stroke than buildings to represent a road.
+ * Uses a dashed, lighter stroke to differentiate from building outlines.
+ *
+ * Consistent stroke style: var(--line-color), strokeLinecap="round"
+ * for hand-drawn feel. Dashed pattern for path differentiation.
  */
 export const Path: React.FC<PathProps> = ({ from, to }) => {
   const start = toIsometric(from.gridX, from.gridY);
@@ -25,8 +28,9 @@ export const Path: React.FC<PathProps> = ({ from, to }) => {
       stroke="var(--line-color)"
       strokeWidth="4"
       strokeLinecap="round"
+      strokeDasharray="8 4"
       fill="none"
-      opacity={0.3}
+      opacity={0.25}
       data-testid="env-path"
     />
   );
