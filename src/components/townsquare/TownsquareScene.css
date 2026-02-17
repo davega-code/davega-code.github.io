@@ -1,0 +1,50 @@
+/* ==========================================================================
+   TownsquareScene — Main scene container styles
+   ========================================================================== */
+
+.townsquare-scene {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-color);
+  overflow: hidden;
+}
+
+.townsquare-scene__svg {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+/* ── Building hover styles ── */
+.building-wrapper {
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.building-wrapper:hover {
+  filter: brightness(1.08);
+}
+
+/* ── Keyboard focus outline ── */
+.building-wrapper:focus-visible {
+  outline: 3px solid var(--line-color);
+  outline-offset: 4px;
+}
+
+/* Fallback for browsers without :focus-visible */
+.building-wrapper:focus {
+  outline: none;
+}
+
+.building-wrapper:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.building-wrapper:focus-visible {
+  outline: 3px solid var(--line-color);
+  outline-offset: 4px;
+}
