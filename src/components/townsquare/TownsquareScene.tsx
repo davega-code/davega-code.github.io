@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IsometricGrid } from './IsometricGrid';
 import { BuildingWrapper } from './buildings/BuildingWrapper';
 import { TownCenter } from './buildings/TownCenter';
@@ -11,6 +11,7 @@ import { Tree } from './environment/Tree';
 import { Bench } from './environment/Bench';
 import { LampPost } from './environment/LampPost';
 import { Path } from './environment/Path';
+import { StickFigureManager } from './animation/StickFigureManager';
 import { toIsometric } from '../../utils/isometric';
 import { useIsometricViewport } from '../../hooks/useIsometricViewport';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
@@ -47,6 +48,34 @@ const PATH_CONNECTIONS: Array<{
   { from: { gridX: 5, gridY: -2 }, to: { gridX: 0, gridY: -6 } },
 ];
 
+/**
+ * Determine the number of stick figures based on viewport width (T055).
+ * Desktop (1280px+): 10–13, Tablet (768px+): 6–8, Mobile: 4–5.
+ */
+function useResponsiveFigureCount(): number {
+  const [count, setCount] = useState(() => {
+    if (typeof window === 'undefined') return 10;
+    const w = window.innerWidth;
+    if (w >= 1280) return 12;
+    if (w >= 768) return 7;
+    return 4;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w >= 1280) setCount(12);
+      else if (w >= 768) setCount(7);
+      else setCount(4);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return count;
+}
+
 export interface TownsquareSceneProps {
   /** Callback when a building is clicked */
   onBuildingClick: (buildingId: string) => void;
@@ -68,6 +97,7 @@ export const TownsquareScene: React.FC<TownsquareSceneProps> = ({
   isNavigating = false,
 }) => {
   const { reducedMotion } = useReducedMotion();
+  const figureCount = useResponsiveFigureCount();
   const {
     viewBox,
     transformString,
@@ -144,6 +174,13 @@ export const TownsquareScene: React.FC<TownsquareSceneProps> = ({
                 return null;
             }
           })}
+
+          {/* ── Stick figures (after environment, before buildings) ── */}
+          <StickFigureManager
+            reducedMotion={reducedMotion}
+            isVisible={!isNavigating}
+            figureCount={figureCount}
+          />
 
           {/* ── Buildings (depth-sorted, rendered last / on top) ── */}
           {sortedBuildings.map((config) => {
