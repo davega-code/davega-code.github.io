@@ -3,16 +3,7 @@ import { SECTIONS } from "../../shared/types.ts";
 import type { IconPosition } from "../../shared/types.ts";
 
 const COLUMN_X = 24;
-const START_Y = 64; // below toolbar
-const ROW_GAP = 100;
-
-export function calcInitialPositions(): IconPosition[] {
-  return SECTIONS.map((s, i) => ({
-    id: s.id,
-    x: COLUMN_X,
-    y: START_Y + i * ROW_GAP,
-  }));
-}
+const START_Y = 64;
 
 interface IconGridProps {
   positions: IconPosition[];

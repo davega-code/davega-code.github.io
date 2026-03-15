@@ -2,8 +2,17 @@ import { useState } from "react";
 import { DragDropProvider } from "@dnd-kit/react";
 import { Background } from "./background/index.ts";
 import { Toolbar } from "./toolbar/index.ts";
-import { IconGrid, calcInitialPositions } from "./icon/index.ts";
+import { IconGrid } from "./icon/index.ts";
+import { SECTIONS } from "../shared/types.ts";
 import type { IconPosition } from "../shared/types.ts";
+
+function calcInitialPositions(): IconPosition[] {
+  return SECTIONS.map((s, i) => ({
+    id: s.id,
+    x: 24,
+    y: 64 + i * 100,
+  }));
+}
 
 export function DesktopSurface() {
   const [positions, setPositions] =

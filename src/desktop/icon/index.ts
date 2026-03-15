@@ -1,2 +1,2 @@
 export { Icon } from "./Icon.tsx";
-export { IconGrid, calcInitialPositions } from "./IconGrid.tsx";
+export { IconGrid } from "./IconGrid.tsx";
