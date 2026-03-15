@@ -1,0 +1,32 @@
+/* ==========================================================================
+   ZoomTransition — CSS transition styles for building navigation zoom effect
+   ========================================================================== */
+
+.zoom-container {
+  transition: transform 600ms ease-in-out;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Active zoom-in modifier */
+.zoom-container--zooming-in {
+  /* Transform is applied via inline style for dynamic target position */
+}
+
+/* Active zoom-out modifier */
+.zoom-container--zooming-out {
+  /* Transform animates back to scale(1) translate(0,0) via inline style */
+}
+
+/* Hidden state: scene is not visible but remains mounted (preserves state) */
+.zoom-container--hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Respect reduced motion preference at the CSS level as well */
+@media (prefers-reduced-motion: reduce) {
+  .zoom-container {
+    transition: none;
+  }
+}

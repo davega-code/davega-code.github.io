@@ -26,3 +26,6 @@ pnpm-debug.log*
 .vscode/*
 !.vscode/extensions.json
 *.local
+.roo/
+.specify/
+specs/

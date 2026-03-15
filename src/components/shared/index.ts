@@ -1,3 +1,5 @@
-export * from './layout';
-export * from './cards';
-export * from './hero';
+export { BackToTownsquare } from './BackToTownsquare';
+export type { BackToTownsquareProps } from './BackToTownsquare';
+
+export { SectionHeader } from './SectionHeader';
+export type { SectionHeaderProps } from './SectionHeader';

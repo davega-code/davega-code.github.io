@@ -1,0 +1,70 @@
+/* ==========================================================================
+   BackToTownsquare — line-art styled return button for section pages
+   ========================================================================== */
+
+.back-to-townsquare {
+  position: fixed;
+  top: var(--spacing-lg, 24px);
+  left: var(--spacing-lg, 24px);
+  z-index: 100;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+
+  /* Line-art aesthetic: black outline, minimal fill */
+  background: var(--bg-color, #fafafa);
+  border: 2px solid var(--line-color, #1a1a1a);
+  border-radius: 4px;
+  color: var(--line-color, #1a1a1a);
+
+  font-family: Georgia, serif;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    background-color var(--transition-fast, 0.2s ease),
+    color var(--transition-fast, 0.2s ease),
+    transform var(--transition-fast, 0.2s ease);
+}
+
+.back-to-townsquare:hover {
+  background: var(--line-color, #1a1a1a);
+  color: var(--bg-color, #fafafa);
+}
+
+.back-to-townsquare:focus-visible {
+  outline: 3px solid var(--line-color, #1a1a1a);
+  outline-offset: 2px;
+}
+
+.back-to-townsquare:active {
+  transform: scale(0.97);
+}
+
+.back-to-townsquare__icon {
+  flex-shrink: 0;
+}
+
+.back-to-townsquare__label {
+  white-space: nowrap;
+}
+
+/* Responsive: smaller button on narrow screens */
+@media (max-width: 480px) {
+  .back-to-townsquare {
+    top: var(--spacing-md, 16px);
+    left: var(--spacing-md, 16px);
+    padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+    font-size: var(--font-size-xs, 0.75rem);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .back-to-townsquare {
+    transition: none;
+  }
+}

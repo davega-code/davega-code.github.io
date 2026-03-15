@@ -1,0 +1,62 @@
+/* ==========================================================================
+   SectionHeader — shared decorative header for content section pages
+   Line-diamond-line decoration with line art aesthetic
+   ========================================================================== */
+
+.section-header {
+  margin-bottom: var(--spacing-xl, 32px);
+  text-align: center;
+}
+
+/* ---------- Decoration container: line — ◆ — line ---------- */
+.section-header__decoration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+/* Horizontal lines flanking the diamond */
+.section-header__line {
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--line-color, #1a1a1a);
+  border-radius: 1px;
+}
+
+/* Rotated square forming a diamond shape */
+.section-header__diamond {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: var(--line-color, #1a1a1a);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ---------- Title ---------- */
+.section-header__title {
+  font-family: Georgia, serif;
+  font-size: var(--font-size-2xl, 2rem);
+  font-weight: 700;
+  color: var(--line-color, #1a1a1a);
+  margin: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .section-header__line {
+    width: 40px;
+  }
+
+  .section-header__diamond {
+    width: 8px;
+    height: 8px;
+  }
+
+  .section-header__title {
+    font-size: var(--font-size-xl, 1.5rem);
+  }
+}
