@@ -1,169 +1,121 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import {
-  AboutSection,
-  BlogSection,
-  PhotographySection,
-  ContactSection,
-} from './components/sections';
-import { TownsquareScene } from './components/townsquare';
-import { ZoomTransition } from './components/transitions';
-import { useReducedMotion } from './hooks/useReducedMotion';
-import { getBuildingCenter } from './utils/isometric';
-import { BUILDINGS } from './components/townsquare/buildings/buildingConfigs';
-import './App.css';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import heroImg from './assets/hero.png'
+import './App.css'
 
-/**
- * Inner app component that uses React Router hooks (must be inside <Router>).
- * Manages the zoom transition state and navigation orchestration.
- */
-const AppContent: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { reducedMotion } = useReducedMotion();
-
-  // Zoom transition state
-  const [zoomActive, setZoomActive] = useState(false);
-  const [zoomDirection, setZoomDirection] = useState<'zoom-in' | 'zoom-out'>('zoom-in');
-  const [targetPosition, setTargetPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [sceneHidden, setSceneHidden] = useState(false);
-
-  // Track the last-visited building for zoom-out on back navigation
-  const lastBuildingIdRef = useRef<string | null>(null);
-  // Track the route to navigate to after zoom-in completes
-  const pendingRouteRef = useRef<string | null>(null);
-
-  // Whether we're on a section page (not the townsquare root)
-  const isOnSection = location.pathname !== '/';
-
-  /**
-   * Handle building click: start zoom-in animation toward the clicked building.
-   */
-  const handleBuildingClick = useCallback(
-    (buildingId: string) => {
-      const building = BUILDINGS.find((b) => b.id === buildingId);
-      if (!building) return;
-
-      const center = getBuildingCenter(building);
-      lastBuildingIdRef.current = buildingId;
-      pendingRouteRef.current = building.route;
-
-      if (reducedMotion) {
-        // Skip animation: navigate instantly
-        setSceneHidden(true);
-        navigate(building.route);
-        return;
-      }
-
-      // Start zoom-in animation
-      setTargetPosition(center);
-      setZoomDirection('zoom-in');
-      setZoomActive(true);
-    },
-    [navigate, reducedMotion],
-  );
-
-  /**
-   * Called when zoom-in animation completes: navigate to the section route
-   * and hide the townsquare scene.
-   */
-  const handleZoomInComplete = useCallback(() => {
-    if (pendingRouteRef.current) {
-      setSceneHidden(true);
-      navigate(pendingRouteRef.current);
-      pendingRouteRef.current = null;
-      setZoomActive(false);
-    }
-  }, [navigate]);
-
-  /**
-   * Called when zoom-out animation completes: reset viewport to default.
-   */
-  const handleZoomOutComplete = useCallback(() => {
-    setZoomActive(false);
-    lastBuildingIdRef.current = null;
-  }, []);
-
-  /**
-   * Handle "Back to Townsquare" click from any section page.
-   * Navigate to `/`, show the townsquare at zoomed-in state, then animate zoom-out.
-   */
-  const handleBackToTownsquare = useCallback(() => {
-    if (reducedMotion) {
-      // Skip animation: navigate instantly
-      setSceneHidden(false);
-      navigate('/');
-      return;
-    }
-
-    // Compute the target position for the last-visited building
-    const lastBuilding = BUILDINGS.find((b) => b.id === lastBuildingIdRef.current);
-    if (lastBuilding) {
-      const center = getBuildingCenter(lastBuilding);
-      setTargetPosition(center);
-    }
-
-    // Navigate to root, show scene at zoomed-in state, then animate zoom-out
-    navigate('/');
-    setSceneHidden(false);
-
-    // Use requestAnimationFrame to ensure the scene is visible before starting zoom-out
-    requestAnimationFrame(() => {
-      setZoomDirection('zoom-out');
-      setZoomActive(true);
-    });
-  }, [navigate, reducedMotion]);
-
-  /**
-   * Dispatch onComplete based on current zoom direction.
-   */
-  const handleZoomComplete = useCallback(() => {
-    if (zoomDirection === 'zoom-in') {
-      handleZoomInComplete();
-    } else {
-      handleZoomOutComplete();
-    }
-  }, [zoomDirection, handleZoomInComplete, handleZoomOutComplete]);
-
-  // Build zoom container class names
-  const zoomContainerClasses = sceneHidden ? 'zoom-container--hidden' : '';
+function App() {
+  const [count, setCount] = useState(0)
 
   return (
-    <div className="app">
-      {/* Townsquare scene: always mounted, hidden via CSS when on a section page */}
-      <div className={zoomContainerClasses} style={sceneHidden ? undefined : undefined}>
-        <ZoomTransition
-          isActive={zoomActive}
-          direction={zoomDirection}
-          targetPosition={targetPosition}
-          onComplete={handleZoomComplete}
-          reducedMotion={reducedMotion}
-        >
-          <TownsquareScene onBuildingClick={handleBuildingClick} isNavigating={zoomActive} />
-        </ZoomTransition>
-      </div>
-
-      {/* Section pages: rendered on top when navigated to */}
-      {isOnSection && (
-        <div className="section-overlay">
-          <Routes>
-            <Route path="/about" element={<AboutSection onBack={handleBackToTownsquare} />} />
-            <Route path="/blog" element={<BlogSection onBack={handleBackToTownsquare} />} />
-            <Route path="/photography" element={<PhotographySection onBack={handleBackToTownsquare} />} />
-            <Route path="/contact" element={<ContactSection onBack={handleBackToTownsquare} />} />
-          </Routes>
+    <>
+      <section id="center">
+        <div className="hero">
+          <img src={heroImg} className="base" width="170" height="179" alt="" />
+          <img src={reactLogo} className="framework" alt="React logo" />
+          <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
-      )}
-    </div>
-  );
-};
+        <div>
+          <h1>Get started</h1>
+          <p>
+            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+          </p>
+        </div>
+        <button
+          className="counter"
+          onClick={() => setCount((count) => count + 1)}
+        >
+          Count is {count}
+        </button>
+      </section>
 
-const App: React.FC = () => {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
-};
+      <div className="ticks"></div>
 
-export default App;
+      <section id="next-steps">
+        <div id="docs">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#documentation-icon"></use>
+          </svg>
+          <h2>Documentation</h2>
+          <p>Your questions, answered</p>
+          <ul>
+            <li>
+              <a href="https://vite.dev/" target="_blank">
+                <img className="logo" src={viteLogo} alt="" />
+                Explore Vite
+              </a>
+            </li>
+            <li>
+              <a href="https://react.dev/" target="_blank">
+                <img className="button-icon" src={reactLogo} alt="" />
+                Learn more
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="social">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#social-icon"></use>
+          </svg>
+          <h2>Connect with us</h2>
+          <p>Join the Vite community</p>
+          <ul>
+            <li>
+              <a href="https://github.com/vitejs/vite" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#github-icon"></use>
+                </svg>
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://chat.vite.dev/" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#discord-icon"></use>
+                </svg>
+                Discord
+              </a>
+            </li>
+            <li>
+              <a href="https://x.com/vite_js" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#x-icon"></use>
+                </svg>
+                X.com
+              </a>
+            </li>
+            <li>
+              <a href="https://bsky.app/profile/vite.dev" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#bluesky-icon"></use>
+                </svg>
+                Bluesky
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div className="ticks"></div>
+      <section id="spacer"></section>
+    </>
+  )
+}
+
+export default App
