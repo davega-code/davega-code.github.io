@@ -1,1 +1,1 @@
-// Desktop background — wallpaper/visual backdrop for the desktop surface
+export { Background } from "./Background.tsx";

@@ -1,1 +1,2 @@
-// Desktop icon — draggable icon representing a content section
+export { Icon } from "./Icon.tsx";
+export { IconGrid, calcInitialPositions } from "./IconGrid.tsx";

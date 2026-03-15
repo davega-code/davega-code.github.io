@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/dom": "^0.3.2",
+    "@dnd-kit/react": "^0.3.2",
+    "@tailwindcss/vite": "^4.2.1",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

@@ -2,6 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <!-- Dark mode FOUC prevention — runs before React -->
+    <script>
+      document.documentElement.classList.toggle(
+        "dark",
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      );
+    </script>
     <!-- Single Page App redirect handler for GitHub Pages -->
     <script type="text/javascript">
       (function(l) {
@@ -21,6 +28,9 @@
     <meta name="description" content="David Vega's personal website" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <title>David Vega</title>
   </head>
   <body>
