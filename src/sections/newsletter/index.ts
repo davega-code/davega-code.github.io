@@ -1,1 +1,1 @@
-// Newsletter section — articles and written content
+export { Newsletter } from "./Newsletter.tsx";

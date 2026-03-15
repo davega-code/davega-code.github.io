@@ -1,1 +1,1 @@
-// Desktop window — wrapper with title bar (minimize, enlarge, close) and content frame
+export { Window } from "./Window.tsx";

@@ -1,1 +1,1 @@
-// Photography section — photo gallery and visual portfolio
+export { Photography } from "./Photography.tsx";

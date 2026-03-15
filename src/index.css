@@ -52,6 +52,18 @@
   --color-icon-label: #e8e4dc;
 }
 
+/* Dot-grid decorative texture — radial-gradient dots for visual depth.
+   Uses theme-aware color token so dots adapt to light/dark automatically. */
+.dot-grid {
+  background-image: radial-gradient(circle, var(--color-text-primary) 0.5px, transparent 0.5px);
+  background-size: 16px 16px;
+}
+
+.dot-grid-lg {
+  background-image: radial-gradient(circle, var(--color-text-primary) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 /* Base resets */
 *,
 *::before,

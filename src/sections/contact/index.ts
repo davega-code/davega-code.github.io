@@ -1,1 +1,1 @@
-// Contact section — contact form or contact information
+export { Contact } from "./Contact.tsx";

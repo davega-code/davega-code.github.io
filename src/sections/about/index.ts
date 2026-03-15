@@ -1,1 +1,1 @@
-// About section — personal bio, background, and professional information
+export { About } from "./About.tsx";

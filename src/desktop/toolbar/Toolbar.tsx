@@ -1,27 +1,25 @@
-import { useTheme, useDeviceLayout } from "../../shared/index.ts";
-
-const btnClass =
-  "flex h-7 w-7 items-center justify-center rounded-md border border-(--color-border) bg-(--color-surface-raised) text-(--color-text-secondary) transition-colors hover:text-(--color-accent) hover:border-(--color-accent)";
+import { useTheme, useDeviceLayout, Theme } from "../../shared/index.ts";
+import * as css from "./toolbar.css.ts";
 
 export function Toolbar() {
   const { theme, toggleTheme } = useTheme();
   const { toggleLayout } = useDeviceLayout();
 
-  return (
-    <header className="fixed top-0 right-0 left-0 z-50 flex h-(--spacing-toolbar-h) items-center justify-between border-b border-(--color-toolbar-border) bg-(--color-toolbar-bg)/80 px-4 backdrop-blur-md">
-      <div className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-(--color-text-primary)">
-        davega.net
-      </div>
+  const oppositeTheme = theme === Theme.DARK ? Theme.LIGHT : Theme.DARK;
 
-      <div className="flex items-center gap-1.5">
+  return (
+    <header className={css.toolbar}>
+      <div className={css.wordmark}>davega.net</div>
+
+      <div className={css.actions}>
         <button
           onClick={toggleTheme}
-          className={btnClass}
-          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          className={css.btn}
+          aria-label={`Switch to ${oppositeTheme} mode`}
+          title={`Switch to ${oppositeTheme} mode`}
         >
-          {theme === "dark" ? (
-            <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+          {theme === Theme.DARK ? (
+            <svg viewBox="0 0 20 20" fill="currentColor" className={css.icon}>
               <path
                 fillRule="evenodd"
                 d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
@@ -29,7 +27,7 @@ export function Toolbar() {
               />
             </svg>
           ) : (
-            <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+            <svg viewBox="0 0 20 20" fill="currentColor" className={css.icon}>
               <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
             </svg>
           )}
@@ -37,11 +35,11 @@ export function Toolbar() {
 
         <button
           onClick={toggleLayout}
-          className={btnClass}
+          className={css.btn}
           aria-label="Toggle mobile preview"
           title="Toggle mobile preview"
         >
-          <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+          <svg viewBox="0 0 20 20" fill="currentColor" className={css.icon}>
             <path d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" />
           </svg>
         </button>

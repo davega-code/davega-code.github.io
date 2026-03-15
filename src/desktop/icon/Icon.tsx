@@ -1,7 +1,9 @@
 import { useDraggable } from "@dnd-kit/react";
 import { RestrictToWindow } from "@dnd-kit/dom/modifiers";
 import type { SectionDefinition } from "../../shared/types.ts";
+import * as css from "./icon.css.ts";
 
+/** SVG path data for each section icon — keyed by SectionDefinition.icon */
 const ICON_GLYPHS: Record<string, string> = {
   user: "M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z",
   mail: "M2 6l10 7L22 6M2 6h20v12H2z",
@@ -13,10 +15,12 @@ const ICON_GLYPHS: Record<string, string> = {
 
 interface IconProps {
   section: SectionDefinition;
+  /** Runtime-computed position (left/top) from drag-and-drop — must stay inline */
   style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
-export function Icon({ section, style }: IconProps) {
+export function Icon({ section, style, onClick }: IconProps) {
   const { ref, isDragSource } = useDraggable({
     id: section.id,
     modifiers: [RestrictToWindow],
@@ -27,23 +31,14 @@ export function Icon({ section, style }: IconProps) {
   return (
     <div
       ref={ref}
-      className={[
-        "group absolute flex w-20 cursor-default select-none flex-col items-center gap-1.5 rounded-lg p-2 transition-colors",
-        isDragSource
-          ? "z-50 scale-105 opacity-80 shadow-lg"
-          : "hover:bg-(--color-icon-hover)",
-      ].join(" ")}
+      className={`${css.iconBase} ${isDragSource ? css.iconDragging : css.iconResting}`}
       style={style}
+      onClick={onClick}
     >
-      <div
-        className={[
-          "flex h-14 w-14 items-center justify-center rounded-xl border border-(--color-border) bg-(--color-icon-bg) backdrop-blur-sm transition-shadow",
-          isDragSource ? "shadow-xl" : "shadow-sm group-hover:shadow-md",
-        ].join(" ")}
-      >
+      <div className={`${css.cardBase} ${isDragSource ? css.cardDragging : css.cardResting}`}>
         <svg
           viewBox="0 0 24 24"
-          className="h-6 w-6 text-(--color-accent)"
+          className={css.glyph}
           fill="none"
           stroke="currentColor"
           strokeWidth={1.5}
@@ -53,9 +48,7 @@ export function Icon({ section, style }: IconProps) {
           <path d={path} />
         </svg>
       </div>
-      <span className="max-w-full font-mono text-[11px] font-medium text-(--color-icon-label)">
-        {section.label}
-      </span>
+      <span className={css.label}>{section.label}</span>
     </div>
   );
 }
