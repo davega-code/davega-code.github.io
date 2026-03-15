@@ -7,6 +7,7 @@ import { Newsletter } from "../../sections/newsletter/index.ts";
 import { Photography } from "../../sections/photography/index.ts";
 import * as css from "./window.css.ts";
 
+/** Maps section IDs to their content components. Adding a section here makes it renderable in a window. */
 const SECTION_CONTENT: Record<string, ComponentType> = {
   about: About,
   contact: Contact,
@@ -26,6 +27,15 @@ interface WindowProps {
   onFocus: () => void;
 }
 
+/**
+ * Window — desktop-metaphor window with title bar chrome and section content.
+ *
+ * Two refs work together for drag:
+ *  - `dragRef` on the container → entire window moves as a unit during drag
+ *  - `handleRef` on the title bar → only the title bar initiates drag
+ *
+ * Minimize and close both call `onClose` (same behavior for now).
+ */
 export function Window({
   sectionId,
   label,
@@ -38,6 +48,9 @@ export function Window({
   onFocus,
 }: WindowProps) {
   const handleRef = useRef<HTMLDivElement>(null);
+
+  // Drag ID is prefixed "window-" so DesktopSurface.onDragEnd can distinguish
+  // window drags from icon drags (which use bare section IDs like "about").
   const { ref: dragRef } = useDraggable({
     id: `window-${sectionId}`,
     modifiers: [RestrictToWindow],
@@ -46,6 +59,9 @@ export function Window({
 
   const Content = SECTION_CONTENT[sectionId];
 
+  // Expanded windows use CSS class for fixed full-width, but still need
+  // height via inline style (calc against toolbar token) and zIndex for stacking.
+  // Default windows use inline left/top for drag-computed pixel positions.
   const positionStyle: React.CSSProperties = expanded
     ? { zIndex, height: `calc(100vh - var(--spacing-toolbar-h))` }
     : { left: x, top: y, zIndex };
@@ -57,8 +73,12 @@ export function Window({
       style={positionStyle}
       onMouseDown={onFocus}
     >
-      <div ref={handleRef} className={css.titleBar}>
-        <span className={css.titleLabel}>{label}</span>
+      <div className={css.titleBar}>
+        {/* Handle ref is only on the label area so @dnd-kit never intercepts
+            pointer events on the buttons — they live outside the handle subtree. */}
+        <div ref={handleRef} className={css.titleDragZone}>
+          <span className={css.titleLabel}>{label}</span>
+        </div>
         <div className={css.titleActions}>
           <button
             className={`${css.titleBtn} ${css.titleBtnMinimize}`}

@@ -25,9 +25,18 @@ export function DesktopSurface() {
   const [positions, setPositions] =
     useState<IconPosition[]>(calcInitialPositions);
   const [openWindows, setOpenWindows] = useState<WindowState[]>([]);
+
+  /** Monotonically increasing counter for z-index stacking — each open/focus bumps it. */
   const zCounter = useRef(1);
+
+  /**
+   * Drag guard: when a drag finishes, onClick still fires on the icon.
+   * This flag is set on dragEnd and cleared next frame to suppress the
+   * spurious click that would otherwise re-open or focus a window.
+   */
   const justDragged = useRef(false);
 
+  /** Opens a new window centered on screen, or brings an existing one to front (FR-008). */
   function openWindow(sectionId: string) {
     if (justDragged.current) return;
 
@@ -50,10 +59,12 @@ export function DesktopSurface() {
     });
   }
 
+  /** Removes a window from state — used by both close and minimize buttons. */
   function closeWindow(sectionId: string) {
     setOpenWindows((prev) => prev.filter((w) => w.id !== sectionId));
   }
 
+  /** Toggles between default (centered) and expanded (full desktop area) size. */
   function toggleExpand(sectionId: string) {
     setOpenWindows((prev) =>
       prev.map((w) =>
@@ -62,6 +73,7 @@ export function DesktopSurface() {
     );
   }
 
+  /** Brings a window to front by bumping its z-index. No-op if already on top. */
   function focusWindow(sectionId: string) {
     setOpenWindows((prev) => {
       const win = prev.find((w) => w.id === sectionId);
@@ -86,6 +98,8 @@ export function DesktopSurface() {
 
         const id = String(source.id);
 
+        // Window drag IDs are prefixed "window-" (e.g. "window-about").
+        // Icon drag IDs are bare section IDs (e.g. "about").
         if (id.startsWith("window-")) {
           const sectionId = id.slice(7);
           setOpenWindows((prev) =>
@@ -93,6 +107,8 @@ export function DesktopSurface() {
               w.id === sectionId
                 ? {
                     ...w,
+                    // If dragged while expanded, snap to centered default position
+                    // before applying delta (exits expanded mode on drag).
                     x: w.expanded ? window.innerWidth * 0.2 + transform.x : w.x + transform.x,
                     y: w.expanded ? window.innerHeight * 0.15 + 40 + transform.y : w.y + transform.y,
                     expanded: false,

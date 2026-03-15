@@ -11,9 +11,13 @@ export const defaultSize = "w-[60vw] h-[70vh]";
 export const expanded =
   "!fixed !top-(--spacing-toolbar-h) !left-0 !w-screen !rounded-none !border-x-0";
 
-/** Title bar: flex row with label left, buttons right */
+/** Title bar: flex row with drag zone left, buttons right */
 export const titleBar =
-  "flex h-9 shrink-0 cursor-grab items-center justify-between border-b border-(--color-border) bg-(--color-surface-overlay) px-3 active:cursor-grabbing";
+  "flex h-9 shrink-0 items-center justify-between border-b border-(--color-border) bg-(--color-surface-overlay) px-3";
+
+/** Drag handle zone — fills remaining title bar space so dragging feels natural */
+export const titleDragZone =
+  "flex flex-1 cursor-grab items-center active:cursor-grabbing";
 
 /** Section label in the title bar */
 export const titleLabel =

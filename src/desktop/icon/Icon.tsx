@@ -17,6 +17,7 @@ interface IconProps {
   section: SectionDefinition;
   /** Runtime-computed position (left/top) from drag-and-drop — must stay inline */
   style?: React.CSSProperties;
+  /** Fires on click (not drag) — opens the corresponding window */
   onClick?: () => void;
 }
 

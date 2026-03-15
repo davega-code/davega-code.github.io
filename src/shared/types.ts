@@ -24,11 +24,17 @@ export interface IconPosition {
   y: number;
 }
 
+/** Tracks an open window on the desktop surface. Presence in state = visible; removal = closed. */
 export interface WindowState {
+  /** Section ID (matches SectionDefinition.id) — one window per section */
   id: string;
+  /** Horizontal pixel offset from left edge of desktop */
   x: number;
+  /** Vertical pixel offset from top edge of desktop */
   y: number;
+  /** When true, window fills the viewport below the toolbar */
   expanded: boolean;
+  /** Stacking order — higher value renders on top of lower values */
   zIndex: number;
 }
 
