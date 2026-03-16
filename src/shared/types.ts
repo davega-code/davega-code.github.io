@@ -36,6 +36,8 @@ export interface WindowState {
   expanded: boolean;
   /** Stacking order — higher value renders on top of lower values */
   zIndex: number;
+  /** When true, the window plays its exit animation before being removed */
+  closing?: boolean;
 }
 
 export const SECTIONS: SectionDefinition[] = [

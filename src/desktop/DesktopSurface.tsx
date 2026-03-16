@@ -44,7 +44,9 @@ export function DesktopSurface() {
       const existing = prev.find((w) => w.id === sectionId);
       if (existing) {
         const z = ++zCounter.current;
-        return prev.map((w) => (w.id === sectionId ? { ...w, zIndex: z } : w));
+        return prev.map((w) =>
+          w.id === sectionId ? { ...w, zIndex: z, closing: false } : w,
+        );
       }
       return [
         ...prev,
@@ -59,8 +61,15 @@ export function DesktopSurface() {
     });
   }
 
-  /** Removes a window from state — used by both close and minimize buttons. */
+  /** Marks a window as closing — triggers exit animation. */
   function closeWindow(sectionId: string) {
+    setOpenWindows((prev) =>
+      prev.map((w) => (w.id === sectionId ? { ...w, closing: true } : w)),
+    );
+  }
+
+  /** Removes a window from state after its exit animation completes. */
+  function removeWindow(sectionId: string) {
     setOpenWindows((prev) => prev.filter((w) => w.id !== sectionId));
   }
 
@@ -133,6 +142,7 @@ export function DesktopSurface() {
         <IconGrid positions={positions} onIconClick={openWindow} />
         {openWindows.map((w) => {
           const section = SECTIONS.find((s) => s.id === w.id);
+          const iconPos = positions.find((p) => p.id === w.id);
           return (
             <Window
               key={w.id}
@@ -142,7 +152,11 @@ export function DesktopSurface() {
               y={w.y}
               expanded={w.expanded}
               zIndex={w.zIndex}
+              closing={w.closing}
+              iconX={(iconPos?.x ?? 24) + 36}
+              iconY={(iconPos?.y ?? 64) + 36}
               onClose={() => closeWindow(w.id)}
+              onClosed={() => removeWindow(w.id)}
               onExpand={() => toggleExpand(w.id)}
               onFocus={() => focusWindow(w.id)}
             />
