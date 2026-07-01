@@ -1,0 +1,73 @@
+# davega.net — Desktop Metaphor Personal Website
+
+> **Self-Maintaining**: Keep this file current as the codebase evolves. Update when conventions change, folders are added, or architecture decisions shift.
+
+## Overview
+
+Personal website at davega.net with a desktop metaphor UI. Visitors interact with draggable icons on a desktop surface; clicking an icon opens that section in a window (with minimize, enlarge, close controls). Content sections: Newsletter (articles), About, Photography, Contact. Mobile visitors see a "coming soon" placeholder. Layout detected by viewport width (768px breakpoint).
+
+## Tech Stack
+
+- React 19, TypeScript (strict), Vite, pnpm
+- Tailwind CSS v4 (`@tailwindcss/vite` plugin, `@custom-variant dark` for dark mode)
+- @dnd-kit v2 (`@dnd-kit/react`, `@dnd-kit/dom`) for drag-and-drop
+- Deployed to GitHub Pages via Actions on push to main
+- Build output: `./build` (not default `dist/`)
+
+## Folder Structure
+
+```
+src/
+├── desktop/              # Desktop metaphor shell
+│   ├── background/       # Wallpaper/visual backdrop
+│   ├── toolbar/          # Top bar with theme + layout toggles
+│   ├── icon/             # Draggable section icons
+│   ├── window/           # Window wrapper (title bar: minimize, enlarge, close)
+│   ├── DesktopSurface.tsx # Root desktop component
+│   └── index.ts          # Shell barrel export
+├── mobile/               # Mobile layout (coming soon placeholder)
+│   ├── ComingSoon.tsx
+│   └── index.ts
+├── sections/             # Content sections (co-located)
+│   ├── about/
+│   ├── contact/
+│   ├── newsletter/
+│   └── photography/
+├── shared/               # Cross-cutting utilities, hooks, types
+│   ├── hooks/
+│   │   ├── use-theme.ts        # Theme state + system preference
+│   │   └── use-device-layout.ts # Viewport detection + manual override
+│   ├── types.ts          # Shared type definitions + SECTIONS constant
+│   └── index.ts          # Barrel export
+├── App.tsx               # Layout router (desktop vs mobile)
+├── index.css             # Tailwind entry + theme variables + dark overrides
+└── main.tsx              # Entry point
+```
+
+## Conventions
+
+- **Folders**: kebab-case (`desktop/background/`, `sections/newsletter/`)
+- **Components**: PascalCase (`Background.tsx`, `Window.tsx`)
+- **Barrel exports**: Each folder has an `index.ts` for public API
+- **Co-location**: All files for a component (code, styles, tests, assets) live in its folder
+- **Styling**: Tailwind utility classes with CSS custom properties for theme tokens. Dark mode via `.dark` class on `<html>` and `dark:` Tailwind variant.
+- **Hooks**: Custom hooks in `shared/hooks/` with `use-` prefix (kebab-case files)
+
+## Architecture Decisions
+
+- **Two layout modules** — `desktop/` and `mobile/` are sibling layout trees. Shared concerns (theme, device detection, types) live in `shared/`.
+- **App.tsx is a layout router** — uses `useDeviceLayout()` to conditionally render DesktopSurface or ComingSoon.
+- **Sections are pure content** — they render inside windows but have no knowledge of the desktop shell (icons, windows, drag behavior)
+- **Desktop shell owns the chrome** — window title bar, icon drag, toolbar, and background are all under `src/desktop/`
+- **Adding a new section** = add an entry to `SECTIONS` in `src/shared/types.ts`. No other folders need modification.
+- **Theme is shared** — `useTheme()` hook manages `.dark` class on `<html>`. All components use `dark:` Tailwind classes. FOUC prevented by inline script in `index.html`.
+- **Single-package project** — no pnpm workspaces or monorepo tooling
+
+## Commands
+
+```bash
+pnpm dev        # Dev server on port 3000
+pnpm build      # Type-check + Vite build to ./build
+pnpm lint       # ESLint
+pnpm preview    # Serve production build locally
+```
