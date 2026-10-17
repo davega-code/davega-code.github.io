@@ -16,7 +16,7 @@ function AnimationPlayer({ enabled, setEnabled }: { enabled: boolean; setEnabled
   const [frames, setFrames] = useState<Frame[] | null>(null)
 
   useEffect(() => {
-    if (enabled && !frames && typeof window !== 'undefined') {
+    if (enabled && !frames) {
       import('./animation-frames.js')
         .then(mod => setFrames(mod.frames))
         .catch(() => setEnabled(false))
@@ -28,4 +28,4 @@ function AnimationPlayer({ enabled, setEnabled }: { enabled: boolean; setEnabled
 }
 ```
 
-The `typeof window !== 'undefined'` check prevents bundling this module for SSR, optimizing server bundle size and build speed.
+For whole components, `React.lazy(() => import('./Heavy.tsx'))` inside `<Suspense>` does the same; Vite splits each `import()` into its own chunk.

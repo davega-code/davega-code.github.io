@@ -70,12 +70,11 @@ src/
 
 ## Agent skills
 
-Project skills live in `.agents/skills/<name>/SKILL.md` (the open Agent Skills format, read by Copilot and other agents). They are unmodified copies of upstream skills, pinned to the commit below. To update one, re-copy the folder from upstream and bump the commit here.
+Project skills live in `.agents/skills/<name>/SKILL.md` (the open Agent Skills format, read by Copilot and other agents). They are copied from upstream at the pinned commit below and trimmed to this stack: no Next.js, SSR/RSC or server rules, and no compiled `AGENTS.md`/README/metadata build files (a nested `AGENTS.md` gets loaded as instructions). To update one, re-copy from upstream and re-apply the trim.
 
-| Skill | Use for | Source | Pinned commit |
-|-------|---------|--------|---------------|
-| `frontend-design` | Visual direction, typography, non-generic UI | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | `dbd4588` |
-| `web-design-guidelines` | Accessibility / UX review (fetches rules live) | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines) | `063bee9` |
-| `composition-patterns` | Component APIs, compound components | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/composition-patterns) | `063bee9` |
-| `react-best-practices` | React performance (ignore Next.js-only rules) | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices) | `063bee9` |
-| `react-view-transitions` | Window open/close and state animations | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-view-transitions) | `063bee9` |
+| Skill | Use for | Source | Pinned commit | Local changes |
+|-------|---------|--------|---------------|---------------|
+| `frontend-design` | Visual direction, typography, non-generic UI | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | `dbd4588` | None |
+| `web-design-guidelines` | Accessibility / UX review (fetches rules live) | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines) | `063bee9` | None |
+| `composition-patterns` | Component APIs, compound components | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/composition-patterns) | `063bee9` | Build files removed; `name` matches folder |
+| `react-best-practices` | React performance and correctness | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices) | `063bee9` | 30 of 70 rules kept; index rewritten for a client-only Vite SPA |
