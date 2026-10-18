@@ -1,12 +1,30 @@
-/* Background — three-layer desktop backdrop */
+/* Background — dust of ink and Bauhaus primaries drifting behind the desktop */
 
-/** Layer 1: full-screen base surface, behind all content */
-export const background = "fixed inset-0 -z-10 bg-(--color-surface)";
+/** Full-screen base surface behind all content */
+export const background = "fixed inset-0 -z-10 overflow-hidden bg-(--color-surface)";
 
-/** Layer 2: dot-grid texture at near-invisible opacity for subtle depth.
- *  Slightly higher opacity in dark mode where the surface is darker. */
-export const texture = "absolute inset-0 dot-grid opacity-[0.025] dark:opacity-[0.04]";
+/** Outer: random spot + travel path (duration/phase inline) */
+export const particle = "absolute motion-reduce:animate-none";
 
-/** Layer 3: diagonal gradient wash — accent fades into overlay for warmth */
-export const gradient =
-  "absolute inset-0 bg-gradient-to-br from-(--color-accent)/3 via-transparent to-(--color-surface-overlay)/30";
+/** Inner: the dot itself, with a gentle sway; glows in dark mode */
+export const dot =
+  "size-full rounded-full bg-current animate-particle-sway motion-reduce:animate-none dark:shadow-[0_0_10px_currentColor]";
+
+export const sizes = {
+  small: "size-[3px] opacity-40",
+  medium: "size-[7px] opacity-60",
+  large: "size-[14px] opacity-75",
+} as const;
+
+export const paths = {
+  drift: "animate-particle-drift",
+  rise: "animate-particle-rise",
+  diagonal: "animate-particle-diagonal",
+} as const;
+
+export const colors = {
+  ink: "text-(--color-text-primary)",
+  red: "text-(--color-bauhaus-red)",
+  yellow: "text-(--color-bauhaus-yellow)",
+  blue: "text-(--color-bauhaus-blue)",
+} as const;
