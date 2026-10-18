@@ -68,6 +68,16 @@ src/
 3. Map the id to the component in `SECTION_CONTENT` in `src/desktop/window/Window.tsx`.
 4. If using a new icon name, add its SVG path to `ICON_GLYPHS` in `src/desktop/icon/Icon.tsx` (unknown names fall back to `user`).
 
+### Background
+
+The desktop background is `src/desktop/background/Background.tsx`: 60–140 dots (random count per page load) in three sizes, half ink and half Bauhaus primaries, glowing in dark mode. Each follows one of three CSS keyframe paths (drift, rise, diagonal) with a sway; larger dots move faster for depth. Keyframes are `--animate-particle-*` in `src/index.css`.
+
+- All randomness (positions, durations, phases) is generated once in `makeParticles` and kept in state. Never call `Math.random()` during render: desktop re-renders (dragging icons, opening windows) would change the inline styles and restart every animation.
+- Animate only `transform`/`opacity` and keep `motion-reduce:animate-none`; under reduced motion the dots sit still at their random spots.
+- Known accessibility gap (owner decision): the motion loops forever with no pause control, which falls short of WCAG 2.2.2 (Pause, Stop, Hide). Only `prefers-reduced-motion` stops it.
+
+Light-mode colours are paper grey `#ebe9e4` with Bauhaus primaries; all text tokens are checked to ≥4.5:1 on every surface in both themes. Re-check contrast when changing them.
+
 ## Agent skills
 
 Project skills live in `.agents/skills/<name>/SKILL.md` (the open Agent Skills format, read by Copilot and other agents). They are copied from upstream at the pinned commit below and trimmed to this stack: no Next.js, SSR/RSC or server rules, and no compiled `AGENTS.md`/README/metadata build files (a nested `AGENTS.md` gets loaded as instructions). To update one, re-copy from upstream and re-apply the trim.
