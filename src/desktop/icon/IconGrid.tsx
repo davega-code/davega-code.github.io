@@ -2,11 +2,6 @@ import { Icon } from "./Icon.tsx";
 import { SECTIONS } from "../../shared/types.ts";
 import type { IconPosition } from "../../shared/types.ts";
 
-/** Default icon column — left edge with padding */
-const COLUMN_X = 24;
-/** Default first icon top — below the toolbar */
-const START_Y = 64;
-
 interface IconGridProps {
   positions: IconPosition[];
   onIconClick: (sectionId: string) => void;
@@ -20,16 +15,13 @@ interface IconGridProps {
 export function IconGrid({ positions, onIconClick }: IconGridProps) {
   return (
     <>
-      {SECTIONS.map((section) => {
-        const pos = positions.find((p) => p.id === section.id);
+      {positions.map((pos) => {
+        const section = SECTIONS.find((s) => s.id === pos.id)!;
         return (
           <Icon
             key={section.id}
             section={section}
-            style={{
-              left: pos?.x ?? COLUMN_X,
-              top: pos?.y ?? START_Y,
-            }}
+            style={{ left: pos.x, top: pos.y }}
             onClick={() => onIconClick(section.id)}
           />
         );

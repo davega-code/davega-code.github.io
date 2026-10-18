@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { DragDropProvider } from "@dnd-kit/react";
-import { Background } from "./background/index.ts";
+import { Background } from "../shared/index.ts";
 import { Toolbar } from "./toolbar/index.ts";
 import { IconGrid } from "./icon/index.ts";
 import { Window } from "./window/index.ts";
@@ -17,11 +17,20 @@ function calcInitialPositions(): IconPosition[] {
   }));
 }
 
+/** Where a new (or un-expanded) window lands: offset from the top-left, below the toolbar. */
+function defaultWindowPosition() {
+  return { x: window.innerWidth * 0.2, y: window.innerHeight * 0.15 + 40 };
+}
+
+interface DesktopSurfaceProps {
+  onToggleLayout: () => void;
+}
+
 /**
  * DesktopSurface — root container for the desktop metaphor.
  * Manages icon positions, window state, and drag-end deltas.
  */
-export function DesktopSurface() {
+export function DesktopSurface({ onToggleLayout }: DesktopSurfaceProps) {
   const [positions, setPositions] =
     useState<IconPosition[]>(calcInitialPositions);
   const [openWindows, setOpenWindows] = useState<WindowState[]>([]);
@@ -52,8 +61,7 @@ export function DesktopSurface() {
         ...prev,
         {
           id: sectionId,
-          x: window.innerWidth * 0.2,
-          y: window.innerHeight * 0.15 + 40,
+          ...defaultWindowPosition(),
           expanded: false,
           zIndex: ++zCounter.current,
         },
@@ -112,18 +120,12 @@ export function DesktopSurface() {
         if (id.startsWith("window-")) {
           const sectionId = id.slice(7);
           setOpenWindows((prev) =>
-            prev.map((w) =>
-              w.id === sectionId
-                ? {
-                    ...w,
-                    // If dragged while expanded, snap to centered default position
-                    // before applying delta (exits expanded mode on drag).
-                    x: w.expanded ? window.innerWidth * 0.2 + transform.x : w.x + transform.x,
-                    y: w.expanded ? window.innerHeight * 0.15 + 40 + transform.y : w.y + transform.y,
-                    expanded: false,
-                  }
-                : w,
-            ),
+            prev.map((w) => {
+              if (w.id !== sectionId) return w;
+              // Dragging an expanded window drops it back to the default spot before applying the delta
+              const from = w.expanded ? defaultWindowPosition() : w;
+              return { ...w, x: from.x + transform.x, y: from.y + transform.y, expanded: false };
+            }),
           );
         } else {
           setPositions((prev) =>
@@ -138,11 +140,12 @@ export function DesktopSurface() {
     >
       <div className={css.surface}>
         <Background />
-        <Toolbar />
+        <Toolbar onToggleLayout={onToggleLayout} />
         <IconGrid positions={positions} onIconClick={openWindow} />
         {openWindows.map((w) => {
           const section = SECTIONS.find((s) => s.id === w.id);
-          const iconPos = positions.find((p) => p.id === w.id);
+          // Every section has a position from calcInitialPositions
+          const iconPos = positions.find((p) => p.id === w.id)!;
           return (
             <Window
               key={w.id}
@@ -153,8 +156,8 @@ export function DesktopSurface() {
               expanded={w.expanded}
               zIndex={w.zIndex}
               closing={w.closing}
-              iconX={(iconPos?.x ?? 24) + 36}
-              iconY={(iconPos?.y ?? 64) + 36}
+              iconX={iconPos.x + 36}
+              iconY={iconPos.y + 36}
               onClose={() => closeWindow(w.id)}
               onClosed={() => removeWindow(w.id)}
               onExpand={() => toggleExpand(w.id)}

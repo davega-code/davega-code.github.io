@@ -6,7 +6,7 @@ Guidance for AI coding agents (Copilot, Claude, Codex, etc.) working in this rep
 
 ## Overview
 
-Personal website at **davega.net** with a desktop-metaphor UI. Visitors drag icons on a desktop surface; clicking one opens that section in a window (minimize, enlarge, close). Sections: About, Contact, Newsletter, Photography. Mobile visitors (viewport < 768px) see a "coming soon" placeholder.
+Personal website at **davega.net** with a desktop-metaphor UI. Visitors drag icons on a desktop surface; clicking one opens that section in a window (minimize, enlarge, close). Sections: About, Contact, Newsletter, Photography. Mobile visitors (viewport < 768px) get the same sections as full-width expandable rows over the particle background; About opens automatically after the intro.
 
 ## Commands
 
@@ -21,6 +21,15 @@ pnpm preview   # Serve production build locally
 ```
 
 No test framework is configured. Validate changes with `pnpm lint` and `pnpm build`.
+
+### Browser validation
+
+Always validate UI changes in a real browser with Playwright, using the **accessibility snapshot** (roles, names, `expanded`/`checked` state), not screenshots or pictures. Snapshots are text, so they can be diffed and asserted. Use either:
+
+- the Playwright MCP servers in `.mcp.json`: `playwright` (own browser) or `playwright-cdp` (attaches to a browser started with `--remote-debugging-port=9222`). Use `browser_snapshot`, not `browser_take_screenshot`.
+- the `playwright-cli` skill (`.agents/skills/playwright-cli/`): `playwright-cli snapshot`.
+
+Run `pnpm dev` (or `pnpm build && pnpm preview`) and check both layouts. Phone-sized viewports (< 768px) get the mobile layout.
 
 ## Tech stack
 
@@ -37,10 +46,10 @@ Auto-deploys to GitHub Pages via `.github/workflows/deploy.yml` on push to `main
 
 ```
 src/
-├── desktop/          # Desktop shell: background/, toolbar/, icon/, window/, DesktopSurface.tsx
-├── mobile/           # Coming-soon placeholder
-├── sections/         # Pure content: about/, contact/, newsletter/, photography/
-├── shared/           # hooks/ (use-theme, use-device-layout), types.ts (SECTIONS), barrel
+├── desktop/          # Desktop shell: toolbar/, icon/, window/, DesktopSurface.tsx
+├── mobile/           # MobileLayout: particle intro, then sections as expandable rows
+├── sections/         # Pure content: about/, contact/, newsletter/, photography/; index.ts (SECTION_CONTENT)
+├── shared/           # background/ (particles), theme-toggle/, hooks/ (use-theme, use-device-layout), types.ts (SECTIONS), barrel
 ├── App.tsx           # Layout router: desktop vs mobile via useDeviceLayout()
 ├── index.css         # Tailwind entry, theme tokens, dark overrides
 └── main.tsx
@@ -65,12 +74,12 @@ src/
 
 1. Create `src/sections/<id>/` with `<Name>.tsx` and `index.ts`.
 2. Add `{ id, label, icon }` to `SECTIONS` in `src/shared/types.ts`.
-3. Map the id to the component in `SECTION_CONTENT` in `src/desktop/window/Window.tsx`.
+3. Map the id to the component in `SECTION_CONTENT` in `src/sections/index.ts` (used by both layouts).
 4. If using a new icon name, add its SVG path to `ICON_GLYPHS` in `src/desktop/icon/Icon.tsx` (unknown names fall back to `user`).
 
 ### Background
 
-The desktop background is `src/desktop/background/Background.tsx`: 60–140 dots (random count per page load) in three sizes, half ink and half Bauhaus primaries, glowing in dark mode. Each follows one of three CSS keyframe paths (drift, rise, diagonal) with a sway; larger dots move faster for depth. Keyframes are `--animate-particle-*` in `src/index.css`.
+The particle background is `src/shared/background/Background.tsx`, used by both layouts: 60–140 dots (random count per page load) in three sizes, half ink and half Bauhaus primaries, glowing in dark mode. Each follows one of three CSS keyframe paths (drift, rise, diagonal) with a sway; larger dots move faster for depth. Keyframes are `--animate-particle-*` in `src/index.css`; the mobile intro uses `--animate-fade-in` and `--animate-row-in`.
 
 - All randomness (positions, durations, phases) is generated once in `makeParticles` and kept in state. Never call `Math.random()` during render: desktop re-renders (dragging icons, opening windows) would change the inline styles and restart every animation.
 - Animate only `transform`/`opacity` and keep `motion-reduce:animate-none`; under reduced motion the dots sit still at their random spots.
@@ -88,3 +97,4 @@ Project skills live in `.agents/skills/<name>/SKILL.md` (the open Agent Skills f
 | `web-design-guidelines` | Accessibility / UX review (fetches rules live) | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines) | `063bee9` | None |
 | `composition-patterns` | Component APIs, compound components | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/composition-patterns) | `063bee9` | Build files removed; `name` matches folder |
 | `react-best-practices` | React performance and correctness | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices) | `063bee9` | 30 of 70 rules kept; index rewritten for a client-only Vite SPA |
+| `playwright-cli` | Browser validation via accessibility snapshots | [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli/tree/main/skills/playwright-cli) | `83368cb` | None |

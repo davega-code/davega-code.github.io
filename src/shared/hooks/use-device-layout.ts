@@ -32,10 +32,5 @@ export function useDeviceLayout() {
     });
   }, [detected]);
 
-  const isOverridden = override !== null;
-
-  return useMemo(
-    () => ({ layout, toggleLayout, isOverridden }),
-    [layout, toggleLayout, isOverridden],
-  );
+  return useMemo(() => ({ layout, toggleLayout }), [layout, toggleLayout]);
 }
