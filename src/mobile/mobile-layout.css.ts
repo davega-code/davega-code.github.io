@@ -19,8 +19,10 @@ export const icon = "size-4";
 
 export const list = "relative";
 
-/** Each row rises in on load; delay is set inline to stagger them */
-export const row = "border-b first:border-t border-(--color-border) animate-row-in motion-reduce:animate-none";
+/** Each row rises in on load; delay is set inline to stagger them.
+ *  The veiled, blurred surface keeps particles from crossing labels and open content. */
+export const row =
+  "border-b first:border-t border-(--color-border) bg-(--color-surface)/90 backdrop-blur-md animate-row-in motion-reduce:animate-none";
 
 export const rowButton =
   "flex w-full items-center justify-between px-6 py-5 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-accent)";
