@@ -22,15 +22,11 @@ function defaultWindowPosition() {
   return { x: window.innerWidth * 0.2, y: window.innerHeight * 0.15 + 40 };
 }
 
-interface DesktopSurfaceProps {
-  onToggleLayout: () => void;
-}
-
 /**
  * DesktopSurface — root container for the desktop metaphor.
  * Manages icon positions, window state, and drag-end deltas.
  */
-export function DesktopSurface({ onToggleLayout }: DesktopSurfaceProps) {
+export function DesktopSurface() {
   const [positions, setPositions] =
     useState<IconPosition[]>(calcInitialPositions);
   const [openWindows, setOpenWindows] = useState<WindowState[]>([]);
@@ -140,7 +136,7 @@ export function DesktopSurface({ onToggleLayout }: DesktopSurfaceProps) {
     >
       <div className={css.surface}>
         <Background />
-        <Toolbar onToggleLayout={onToggleLayout} />
+        <Toolbar />
         <IconGrid positions={positions} onIconClick={openWindow} />
         {openWindows.map((w) => {
           const section = SECTIONS.find((s) => s.id === w.id);

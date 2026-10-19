@@ -8,9 +8,6 @@ export const toolbar =
 /** Site wordmark — monospace uppercase for a terminal/developer aesthetic */
 export const wordmark = "font-mono text-xs font-semibold tracking-[0.2em] uppercase text-(--color-text-primary)";
 
-/** Button group with tight spacing */
-export const actions = "flex items-center gap-1.5";
-
 /** Toolbar button — bordered card style with accent highlight on hover */
 export const btn =
   "flex h-7 w-7 items-center justify-center rounded-md border border-(--color-border) bg-(--color-surface-raised) text-(--color-text-secondary) transition-colors hover:text-(--color-accent) hover:border-(--color-accent)";

@@ -10,7 +10,7 @@ Personal website at **davega.net** with a desktop-metaphor UI. Visitors drag ico
 
 ## Commands
 
-pnpm is the package manager.
+pnpm is the only package manager: never use `npm`, `npx` or `yarn`, even when a skill or doc says to. Use `pnpm dlx` for one-off tools.
 
 ```bash
 pnpm install   # Install dependencies
@@ -27,7 +27,7 @@ No test framework is configured. Validate changes with `pnpm lint` and `pnpm bui
 Always validate UI changes in a real browser with Playwright, using the **accessibility snapshot** (roles, names, `expanded`/`checked` state), not screenshots or pictures. Snapshots are text, so they can be diffed and asserted. Use either:
 
 - the Playwright MCP servers in `.mcp.json`: `playwright` (own browser) or `playwright-cdp` (attaches to a browser started with `--remote-debugging-port=9222`). Use `browser_snapshot`, not `browser_take_screenshot`.
-- the `playwright-cli` skill (`.agents/skills/playwright-cli/`): `playwright-cli snapshot`.
+- the `playwright-cli` skill (`.agents/skills/playwright-cli/`): `pnpm dlx @playwright/cli snapshot`. The skill is upstream and says `npm`/`npx`; this repo uses pnpm only, so run every command through `pnpm dlx @playwright/cli` instead.
 
 Run `pnpm dev` (or `pnpm build && pnpm preview`) and check both layouts. Phone-sized viewports (< 768px) get the mobile layout.
 

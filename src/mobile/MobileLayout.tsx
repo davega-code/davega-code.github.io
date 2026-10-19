@@ -11,11 +11,7 @@ const AUTO_OPEN_ID = "about";
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-interface MobileLayoutProps {
-  onToggleLayout: () => void;
-}
-
-export function MobileLayout({ onToggleLayout }: MobileLayoutProps) {
+export function MobileLayout() {
   const [openId, setOpenId] = useState<string | null>(() => (prefersReducedMotion() ? AUTO_OPEN_ID : null));
   const autoOpenTimer = useRef<number>(undefined);
 
@@ -39,19 +35,7 @@ export function MobileLayout({ onToggleLayout }: MobileLayoutProps) {
 
       <header className={css.header} style={{ animationDelay: `${ROWS_START}ms` }}>
         <div className={css.wordmark}>davega.net</div>
-        <div className={css.actions}>
-          <ThemeToggle className={css.btn} iconClassName={css.icon} />
-          <button onClick={onToggleLayout} className={css.btn} aria-label="Switch to desktop view" title="Switch to desktop view">
-            <svg viewBox="0 0 20 20" fill="currentColor" className={css.icon}>
-              <path
-                fillRule="evenodd"
-                d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm11 1H6v6h8V6z"
-                clipRule="evenodd"
-              />
-              <path d="M7 17h6v-2H7v2z" />
-            </svg>
-          </button>
-        </div>
+        <ThemeToggle className={css.btn} iconClassName={css.icon} />
       </header>
 
       <main className={css.list}>
@@ -84,7 +68,7 @@ export function MobileLayout({ onToggleLayout }: MobileLayoutProps) {
                   <path d="M12 5v14M5 12h14" />
                 </svg>
               </button>
-              <div id={panelId} className={`${css.panel} ${open ? css.panelOpen : css.panelClosed}`} inert={!open}>
+              <div id={panelId} className={`${css.panel} ${open ? css.panelOpen : css.panelClosed}`}>
                 <div className={css.panelInner}>
                   <div className={css.panelContent}>{Content ? <Content /> : null}</div>
                 </div>

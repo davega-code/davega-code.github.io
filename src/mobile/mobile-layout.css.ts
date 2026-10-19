@@ -11,8 +11,6 @@ export const header =
 
 export const wordmark = "font-mono text-xs font-semibold tracking-[0.2em] uppercase";
 
-export const actions = "flex gap-2";
-
 /** Circular toggle button, 40px for a comfortable tap target */
 export const btn =
   "flex size-10 items-center justify-center rounded-full border border-(--color-border) bg-(--color-surface-raised) text-(--color-text-secondary) transition-colors hover:text-(--color-accent) hover:border-(--color-accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-accent)";
@@ -35,10 +33,11 @@ export const indicator =
 export const indicatorClosed = "text-(--color-text-muted)";
 export const indicatorOpen = "rotate-45 text-(--color-accent)";
 
-/** Collapsible panel: animates grid rows from 0fr to 1fr so height follows the content */
+/** Collapsible panel: animates grid rows from 0fr to 1fr so height follows the content.
+ *  Visibility is transitioned too, so closed content leaves the accessibility tree and tab order only after it collapses. */
 export const panel =
-  "grid transition-[grid-template-rows] duration-400 ease-[cubic-bezier(0.2,0,0,1)] motion-reduce:transition-none";
-export const panelClosed = "grid-rows-[0fr]";
+  "grid transition-[grid-template-rows,visibility] duration-400 ease-[cubic-bezier(0.2,0,0,1)] motion-reduce:transition-none";
+export const panelClosed = "grid-rows-[0fr] invisible";
 export const panelOpen = "grid-rows-[1fr]";
 
 export const panelInner = "overflow-hidden";
