@@ -43,6 +43,6 @@ export interface WindowState {
 export const SECTIONS: SectionDefinition[] = [
   { id: "about", label: "About", icon: "user" },
   { id: "contact", label: "Contact", icon: "mail" },
-  { id: "newsletter", label: "Newsletter", icon: "file-text" },
+  { id: "blog", label: "Blog", icon: "file-text" },
   { id: "photography", label: "Photography", icon: "camera" },
 ];

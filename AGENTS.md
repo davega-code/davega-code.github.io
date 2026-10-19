@@ -6,7 +6,7 @@ Guidance for AI coding agents (Copilot, Claude, Codex, etc.) working in this rep
 
 ## Overview
 
-Personal website at **davega.net** with a desktop-metaphor UI. Visitors drag icons on a desktop surface; clicking one opens that section in a window (minimize, enlarge, close). Sections: About, Contact, Newsletter, Photography. Mobile visitors (viewport < 768px) get the same sections as full-width expandable rows over the particle background; About opens automatically after the intro.
+Personal website at **davega.net** with a desktop-metaphor UI. Visitors drag icons on a desktop surface; clicking one opens that section in a window (minimize, enlarge, close). Sections: About, Contact, Blog, Photography. Mobile visitors (viewport < 768px) get the same sections as full-width expandable rows over the particle background; About opens automatically after the intro.
 
 ## Commands
 
@@ -52,8 +52,8 @@ Auto-deploys to GitHub Pages via `.github/workflows/deploy.yml` on push to `main
 src/
 ├── desktop/          # Desktop shell: toolbar/, icon/, window/, DesktopSurface.tsx
 ├── mobile/           # MobileLayout: particle intro, then sections as expandable rows
-├── sections/         # Pure content: about/, contact/, newsletter/, photography/; index.ts (SECTION_CONTENT)
-├── shared/           # background/ (particles), theme-toggle/, hooks/ (use-theme, use-device-layout), types.ts (SECTIONS), barrel
+├── sections/         # Pure content: about/, contact/, blog/, photography/; index.ts (SECTION_CONTENT)
+├── shared/           # background/ (particles), pixel-art/ (sprite engine), theme-toggle/, hooks/ (use-theme, use-device-layout), types.ts (SECTIONS), barrel
 ├── App.tsx           # Layout router: desktop vs mobile via useDeviceLayout()
 ├── index.css         # Tailwind entry, theme tokens, dark overrides
 └── main.tsx
@@ -81,13 +81,26 @@ src/
 3. Map the id to the component in `SECTION_CONTENT` in `src/sections/index.ts` (used by both layouts).
 4. If using a new icon name, add its SVG path to `ICON_GLYPHS` in `src/desktop/icon/Icon.tsx` (unknown names fall back to `user`).
 
+### Pixel art
+
+Advance Wars–style pixel art is drawn in code, with no image assets. The reusable engine lives in `src/shared/pixel-art/`:
+
+- `engine.ts`: `PALETTE` (single-character colour keys), `sprite()` grids (all rows must be equal width; checked in dev), a `Painter` (`draw`, `rect`), and timeline helpers (`seg`, `hop`, `frame`, `between`).
+- `PixelCanvas.tsx`: plays a `Scene` at 12fps only while it is on screen, scales by whole device pixels so the art stays crisp, and shows the `poster` frame under reduced motion. Animation runs in one effect with no React state.
+
+Art and scenes stay with the section that uses them. About's timeline (a 16×16 animated icon plus a 112×44 scene per entry) is in `src/sections/about/pixel-scenes/`: `sprites.ts` holds the art, and in `scenes.ts` each `Scene` is a pure `paint(p)` of time `p.t` within a loop. Backdrops are day in light mode and night in dark mode (`p.dark`).
+
+To inspect a frame as text, paint it to a 1× canvas in the browser and map each pixel back to its `PALETTE` key.
+
 ### Background
 
 The particle background is `src/shared/background/Background.tsx`, used by both layouts: 60–140 dots (random count per page load) in three sizes, half ink and half Bauhaus primaries, glowing in dark mode. Each follows one of three CSS keyframe paths (drift, rise, diagonal) with a sway; larger dots move faster for depth. Keyframes are `--animate-particle-*` in `src/index.css`; the mobile intro uses `--animate-fade-in` and `--animate-row-in`.
 
 - All randomness (positions, durations, phases) is generated once in `makeParticles` and kept in state. Never call `Math.random()` during render: desktop re-renders (dragging icons, opening windows) would change the inline styles and restart every animation.
 - Animate only `transform`/`opacity` and keep `motion-reduce:animate-none`; under reduced motion the dots sit still at their random spots.
-- Known accessibility gap (owner decision): the motion loops forever with no pause control, which falls short of WCAG 2.2.2 (Pause, Stop, Hide). Only `prefers-reduced-motion` stops it.
+- Known accessibility gap (owner decision): the motion loops forever with no pause control, which falls short of WCAG 2.2.2 (Pause, Stop, Hide). Only `prefers-reduced-motion` stops it. The same applies to the About pixel scenes, and keyboard-only navigation of the desktop icons (Enter picks an icon up for dragging) is out of scope too. Don't re-raise these in reviews or audits.
+
+The favicon is one of these particles: a blue dot on a paper tile. `public/favicon.svg` is the source and switches to the glowing dark variant via `prefers-color-scheme`. `favicon.ico` and `logo192/512.png` are light-only raster exports of it (the logos are full-bleed, without rounded corners); re-export them when the SVG changes.
 
 Light-mode colours are paper grey `#ebe9e4` with Bauhaus primaries; all text tokens are checked to ≥4.5:1 on every surface in both themes. Re-check contrast when changing them.
 
