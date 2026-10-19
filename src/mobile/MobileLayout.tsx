@@ -34,7 +34,7 @@ export function MobileLayout() {
       </div>
 
       <header className={css.header} style={{ animationDelay: `${ROWS_START}ms` }}>
-        <div className={css.wordmark}>davega.net</div>
+        <h1 className={css.wordmark}>David Vega Ramirez</h1>
         <ThemeToggle className={css.btn} iconClassName={css.icon} />
       </header>
 

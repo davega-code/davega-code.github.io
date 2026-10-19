@@ -73,6 +73,8 @@ src/
 - **Sections are pure content** — no knowledge of icons, windows or drag behavior. The desktop shell owns all chrome.
 - **Theme**: `useTheme()` toggles `.dark` on `<html>`; an inline script in `index.html` prevents FOUC.
 - Single package; no workspaces or monorepo tooling.
+- **SEO**: `index.html` owns canonical/social metadata, profile structured data, and a static introduction replaced by React. Keep it consistent with About/Contact. `public/sitemap.xml` lists only the canonical homepage; advertise it in `public/robots.txt`. Both layouts show the full name as their page heading.
+- **Coming soon**: Blog and Photography have section-specific SVG illustrations and copy, with shared styles in `src/sections/coming-soon.css.ts`.
 
 ### Adding a section
 
