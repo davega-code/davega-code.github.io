@@ -29,3 +29,6 @@ pnpm-debug.log*
 .roo/
 .specify/
 specs/
+
+# Placeholder pnpm 12 writes to ask about build scripts
+pnpm-workspace.yaml
