@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { DragDropProvider } from "@dnd-kit/react";
 import { Background } from "../shared/index.ts";
-import { Toolbar } from "./toolbar/index.ts";
+import { Toolbar, TOOLBAR_HEIGHT } from "./toolbar/index.ts";
 import { IconGrid } from "./icon/index.ts";
 import { Window } from "./window/index.ts";
 import { SECTIONS } from "../shared/types.ts";
@@ -19,7 +19,7 @@ function calcInitialPositions(): IconPosition[] {
 
 /** Where a new (or un-expanded) window lands: offset from the top-left, below the toolbar. */
 function defaultWindowPosition() {
-  return { x: window.innerWidth * 0.2, y: window.innerHeight * 0.15 + 40 };
+  return { x: window.innerWidth * 0.2, y: window.innerHeight * 0.15 + TOOLBAR_HEIGHT };
 }
 
 /**
@@ -99,21 +99,25 @@ export function DesktopSurface() {
   return (
     <DragDropProvider
       onDragEnd={(event) => {
+        const { source, transform } = event.operation;
+        const id = source ? String(source.id) : "";
+        const isWindow = id.startsWith("window-");
+        const moved = transform.x !== 0 || transform.y !== 0;
+
+        // Keyboard users "drop" an icon in place with Enter/Space; treat that as opening it.
+        // Runs before the click guard below is set.
+        if (!event.canceled && source && !moved && !isWindow) openWindow(id);
+
         justDragged.current = true;
         requestAnimationFrame(() => {
           justDragged.current = false;
         });
 
-        if (event.canceled) return;
-
-        const { source, transform } = event.operation;
-        if (!source || (!transform.x && !transform.y)) return;
-
-        const id = String(source.id);
+        if (event.canceled || !source || !moved) return;
 
         // Window drag IDs are prefixed "window-" (e.g. "window-about").
         // Icon drag IDs are bare section IDs (e.g. "about").
-        if (id.startsWith("window-")) {
+        if (isWindow) {
           const sectionId = id.slice(7);
           setOpenWindows((prev) =>
             prev.map((w) => {
@@ -139,14 +143,14 @@ export function DesktopSurface() {
         <Toolbar />
         <IconGrid positions={positions} onIconClick={openWindow} />
         {openWindows.map((w) => {
-          const section = SECTIONS.find((s) => s.id === w.id);
+          const section = SECTIONS.find((s) => s.id === w.id)!;
           // Every section has a position from calcInitialPositions
           const iconPos = positions.find((p) => p.id === w.id)!;
           return (
             <Window
               key={w.id}
               sectionId={w.id}
-              label={section?.label ?? w.id}
+              label={section.label}
               x={w.x}
               y={w.y}
               expanded={w.expanded}

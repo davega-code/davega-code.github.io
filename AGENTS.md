@@ -40,7 +40,7 @@ Run `pnpm dev` (or `pnpm build && pnpm preview`) and check both layouts. Phone-s
 
 ## Deployment
 
-Auto-deploys to GitHub Pages via `.github/workflows/deploy.yml` on push to `main`. Custom domain in `CNAME`. SPA routing uses the GitHub Pages redirect pattern (`public/404.html` + inline script in `index.html`).
+Auto-deploys to GitHub Pages via `.github/workflows/deploy.yml` on push to `main`. Custom domain in `CNAME`. There is no client-side routing; unknown paths get GitHub Pages' own 404.
 
 ## Folder structure
 

@@ -5,6 +5,9 @@
 export const toolbar =
   "fixed top-0 right-0 left-0 z-50 flex h-(--spacing-toolbar-h) items-center justify-between border-b border-(--color-toolbar-border) bg-(--color-toolbar-bg)/80 px-4 backdrop-blur-md";
 
+/** Must match --spacing-toolbar-h in index.css; windows are placed below it */
+export const TOOLBAR_HEIGHT = 40;
+
 /** Site wordmark — monospace uppercase for a terminal/developer aesthetic */
 export const wordmark = "font-mono text-xs font-semibold tracking-[0.2em] uppercase text-(--color-text-primary)";
 
