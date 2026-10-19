@@ -57,6 +57,17 @@
   @keyframes particle-sway {
     to { transform: translate(3vmin, -2vmin); }
   }
+
+  /* Mobile intro: particles fade in, then section rows rise in (delay set inline) */
+  --animate-fade-in: fade-in 800ms ease-out both;
+  --animate-row-in: row-in 500ms cubic-bezier(0.2, 0, 0, 1) both;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes row-in {
+    from { opacity: 0; transform: translateY(12px); }
+  }
 }
 
 /* Dark palette — deep slate with brightened Bauhaus primaries */
@@ -82,13 +93,6 @@
   --color-bauhaus-red: #e8665a;
   --color-bauhaus-yellow: #e9a946;
   --color-bauhaus-blue: #6b98e0;
-}
-
-/* Dot-grid decorative texture — radial-gradient dots for visual depth.
-   Uses theme-aware color token so dots adapt to light/dark automatically. */
-.dot-grid-lg {
-  background-image: radial-gradient(circle, var(--color-text-primary) 1px, transparent 1px);
-  background-size: 24px 24px;
 }
 
 /* Base resets */

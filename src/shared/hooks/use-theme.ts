@@ -4,8 +4,9 @@ import type { ThemeMode } from "../types.ts";
 
 const DARK_MQ = "(prefers-color-scheme: dark)";
 
-function getSystemTheme(): ThemeMode {
-  return window.matchMedia(DARK_MQ).matches ? Theme.DARK : Theme.LIGHT;
+/** Reads the current class so a remounted toggle (e.g. after a layout switch) keeps the user's choice. */
+function getCurrentTheme(): ThemeMode {
+  return document.documentElement.classList.contains("dark") ? Theme.DARK : Theme.LIGHT;
 }
 
 /** Syncs the "dark" CSS class on <html> to activate dark-mode CSS variable overrides. */
@@ -14,7 +15,7 @@ function syncClass(theme: ThemeMode) {
 }
 
 export function useTheme() {
-  const [theme, setTheme] = useState<ThemeMode>(getSystemTheme);
+  const [theme, setTheme] = useState<ThemeMode>(getCurrentTheme);
 
   // Apply the CSS class whenever theme changes
   useEffect(() => {

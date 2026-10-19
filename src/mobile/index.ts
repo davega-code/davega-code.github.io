@@ -1,1 +1,1 @@
-export { ComingSoon } from "./ComingSoon.tsx";
+export { MobileLayout } from "./MobileLayout.tsx";

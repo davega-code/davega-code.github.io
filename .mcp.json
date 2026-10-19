@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "pnpm",
+      "args": [
+        "dlx",
+        "@playwright/mcp@0.0.38"
+      ]
+    },
+    "playwright-cdp": {
+      "command": "pnpm",
+      "args": [
+        "dlx",
+        "@playwright/mcp@0.0.38",
+        "--cdp-endpoint=http://localhost:9222"
+      ]
+    }
+  }
+}

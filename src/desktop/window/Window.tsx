@@ -1,22 +1,16 @@
-import { useRef, useState, useEffect, type ComponentType } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useDraggable } from "@dnd-kit/react";
 import { RestrictToWindow } from "@dnd-kit/dom/modifiers";
-import { About } from "../../sections/about/index.ts";
-import { Contact } from "../../sections/contact/index.ts";
-import { Newsletter } from "../../sections/newsletter/index.ts";
-import { Photography } from "../../sections/photography/index.ts";
+import { SECTION_CONTENT } from "../../sections/index.ts";
+import { TOOLBAR_HEIGHT } from "../toolbar/index.ts";
 import * as css from "./window.css.ts";
-
-/** Maps section IDs to their content components. Adding a section here makes it renderable in a window. */
-const SECTION_CONTENT: Record<string, ComponentType> = {
-  about: About,
-  contact: Contact,
-  newsletter: Newsletter,
-  photography: Photography,
-};
 
 const ANIM_DURATION = 250;
 const ANIM_EASING = "cubic-bezier(0.2, 0, 0, 1)";
+
+// Reduced motion keeps a 1ms transition rather than none: closing waits for transitionend
+const animDuration = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : ANIM_DURATION;
 
 type MountPhase = "pre-mount" | "mounted" | "settled";
 
@@ -86,7 +80,7 @@ export function Window({
 
   // Window's visual top-left depends on expanded state.
   const winX = expanded ? 0 : x;
-  const winY = expanded ? 40 : y; // 40 = toolbar height
+  const winY = expanded ? TOOLBAR_HEIGHT : y;
 
   const originX = iconX - winX;
   const originY = iconY - winY;
@@ -108,7 +102,8 @@ export function Window({
   // Only apply transition during enter/exit — NOT during idle,
   // otherwise dnd-kit drag transforms would animate with our duration.
   if (hasTransition) {
-    style.transition = `transform ${ANIM_DURATION}ms ${ANIM_EASING}, opacity ${ANIM_DURATION}ms ${ANIM_EASING}`;
+    const ms = animDuration();
+    style.transition = `transform ${ms}ms ${ANIM_EASING}, opacity ${ms}ms ${ANIM_EASING}`;
   }
 
   function handleTransitionEnd(e: React.TransitionEvent) {
@@ -144,7 +139,7 @@ export function Window({
           <button
             className={`${css.titleBtn} ${css.titleBtnExpand}`}
             onClick={(e) => { e.stopPropagation(); onExpand(); }}
-            aria-label={`Expand ${label}`}
+            aria-label={`${expanded ? "Restore" : "Expand"} ${label}`}
           >
             <svg viewBox="0 0 24 24" className={css.titleIcon} fill="none" stroke="currentColor" strokeWidth={2}>
               {expanded
