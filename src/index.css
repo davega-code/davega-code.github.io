@@ -104,6 +104,8 @@
 
 body {
   margin: 0;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
   font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

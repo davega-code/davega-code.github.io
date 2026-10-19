@@ -95,7 +95,7 @@ export function About() {
         <div className={css.portrait} aria-hidden="true">
           DV
         </div>
-        <p className={css.greeting}>Hi, I'm David.</p>
+        <p className={css.greeting}>Hi, I'm David Vega.</p>
       </div>
 
       <div className={css.story}>

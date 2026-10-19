@@ -14,7 +14,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ebe9e4" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0f1118" media="(prefers-color-scheme: dark)" />
-    <meta name="description" content="David Vega's personal website" />
+    <meta name="description" content="David Vega Ramirez (David Vega) is a software engineer at Mojang Studios. Explore his work, side projects, and ways to get in touch." />
+    <link rel="canonical" href="https://davega.net/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="davega.net" />
+    <meta property="og:title" content="David Vega Ramirez | Software Engineer" />
+    <meta property="og:description" content="Software engineer at Mojang Studios. Work, side projects, and ways to get in touch with David Vega." />
+    <meta property="og:url" content="https://davega.net/" />
+    <meta property="og:image" content="https://davega.net/logo512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="davega.net blue particle logo" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="David Vega Ramirez | Software Engineer" />
+    <meta name="twitter:description" content="Software engineer at Mojang Studios. Work, side projects, and ways to get in touch with David Vega." />
+    <meta name="twitter:image" content="https://davega.net/logo512.png" />
+    <meta name="twitter:image:alt" content="davega.net blue particle logo" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "@id": "https://davega.net/#profile",
+        "url": "https://davega.net/",
+        "name": "David Vega Ramirez | Software Engineer",
+        "mainEntity": {
+          "@type": "Person",
+          "@id": "https://davega.net/#david-vega",
+          "name": "David Vega Ramirez",
+          "alternateName": "David Vega",
+          "url": "https://davega.net/",
+          "jobTitle": "Senior Software Engineer",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Mojang Studios"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/in/david-vega-ramirez",
+            "https://github.com/davega-code"
+          ]
+        }
+      }
+    </script>
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,11 +63,26 @@
     <!-- General Sans is not on Google Fonts -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
-    <title>David Vega</title>
+    <title>David Vega Ramirez | Software Engineer</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <main class="mx-auto max-w-prose px-6 py-12">
+        <h1 class="text-3xl font-semibold">David Vega Ramirez</h1>
+        <p class="mt-4">Hi, I'm David Vega, a software engineer at Mojang Studios working on Telemetry &amp; Player Insights.</p>
+        <p class="mt-4">Previously, I built gaming safety and moderation systems at Microsoft for Xbox, Minecraft, and Activision. Outside work, I build small tools and explore photography.</p>
+        <h2 class="mt-8 text-xl font-semibold">Get in touch</h2>
+        <ul class="mt-4 flex gap-6">
+          <li><a class="underline" href="https://www.linkedin.com/in/david-vega-ramirez">LinkedIn</a></li>
+          <li><a class="underline" href="https://github.com/davega-code">GitHub</a></li>
+        </ul>
+        <h2 class="mt-8 text-xl font-semibold">Blog</h2>
+        <p class="mt-4">Coming soon. Notes on software, side projects, and things I learn along the way.</p>
+        <h2 class="mt-8 text-xl font-semibold">Photography</h2>
+        <p class="mt-4">Coming soon. A collection of places, details, and moments through my lens.</p>
+        <noscript><p class="mt-8">Enable JavaScript to explore the interactive desktop and full career timeline.</p></noscript>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

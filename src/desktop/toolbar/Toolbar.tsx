@@ -4,7 +4,7 @@ import { ThemeToggle } from "../../shared/index.ts";
 export function Toolbar() {
   return (
     <header className={css.toolbar}>
-      <div className={css.wordmark}>davega.net</div>
+      <h1 className={css.wordmark}>David Vega Ramirez</h1>
       <ThemeToggle className={css.btn} iconClassName={css.icon} />
     </header>
   );
