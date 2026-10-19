@@ -22,6 +22,8 @@ pnpm preview   # Serve production build locally
 
 No test framework is configured. Validate changes with `pnpm lint` and `pnpm build`.
 
+A Copilot CLI `sessionEnd` hook (`.github/hooks/stop-dev-servers.json`) stops any Vite dev/preview server started from this repo or its worktrees when a session ends.
+
 ### Browser validation
 
 Always validate UI changes in a real browser with Playwright, using the **accessibility snapshot** (roles, names, `expanded`/`checked` state), not screenshots or pictures. Snapshots are text, so they can be diffed and asserted. Use either:
