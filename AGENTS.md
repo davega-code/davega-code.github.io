@@ -12,6 +12,8 @@ Personal website at **davega.net** with a desktop-metaphor UI. Visitors drag ico
 
 pnpm is the only package manager: never use `npm`, `npx` or `yarn`, even when a skill or doc says to. Use `pnpm dlx` for one-off tools.
 
+Work on a feature branch in the main checkout; do not create git worktrees for this repo.
+
 ```bash
 pnpm install   # Install dependencies
 pnpm dev       # Dev server on port 3000
@@ -22,7 +24,7 @@ pnpm preview   # Serve production build locally
 
 No test framework is configured. Validate changes with `pnpm lint` and `pnpm build`.
 
-A Copilot CLI `sessionEnd` hook (`.github/hooks/stop-dev-servers.json`) stops any Vite dev/preview server started from this repo or its worktrees when a session ends.
+A Copilot CLI `sessionEnd` hook (`.github/hooks/stop-dev-servers.json`) stops this repo's Vite dev/preview servers when a session ends. The `record-pid` plugin in `vite.config.ts` lists each server's PID in `<tmp>/davega-net-dev-servers/`, and `.github/hooks/stop-dev-servers.mjs` stops them. The hook uses Node rather than PowerShell because the CLI aborts `sessionEnd` hooks after about 1.5s.
 
 ### Browser validation
 
