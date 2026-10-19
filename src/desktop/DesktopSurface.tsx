@@ -99,25 +99,21 @@ export function DesktopSurface() {
   return (
     <DragDropProvider
       onDragEnd={(event) => {
-        const { source, transform } = event.operation;
-        const id = source ? String(source.id) : "";
-        const isWindow = id.startsWith("window-");
-        const moved = transform.x !== 0 || transform.y !== 0;
-
-        // Keyboard users "drop" an icon in place with Enter/Space; treat that as opening it.
-        // Runs before the click guard below is set.
-        if (!event.canceled && source && !moved && !isWindow) openWindow(id);
-
         justDragged.current = true;
         requestAnimationFrame(() => {
           justDragged.current = false;
         });
 
-        if (event.canceled || !source || !moved) return;
+        if (event.canceled) return;
+
+        const { source, transform } = event.operation;
+        if (!source || (!transform.x && !transform.y)) return;
+
+        const id = String(source.id);
 
         // Window drag IDs are prefixed "window-" (e.g. "window-about").
         // Icon drag IDs are bare section IDs (e.g. "about").
-        if (isWindow) {
+        if (id.startsWith("window-")) {
           const sectionId = id.slice(7);
           setOpenWindows((prev) =>
             prev.map((w) => {
